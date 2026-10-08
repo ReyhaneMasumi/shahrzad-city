@@ -1,0 +1,12 @@
+/* پیشنهاد یکسان‌سازی برند (بر پایه audit) */
+:root {
+  --brand-primary: #1C66C1; /* جایگزین پیشنهادی برای #307fe2 با کنتراست بهتر */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
