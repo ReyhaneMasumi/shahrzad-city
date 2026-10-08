@@ -1,12 +1,228 @@
 /* پیشنهاد یکسان‌سازی برند (بر پایه audit) */
 :root {
-  --brand-primary: #1C66C1; /* جایگزین پیشنهادی برای #307fe2 با کنتراست بهتر */
+  --brand-primary: #1c66c1; /* جایگزین پیشنهادی برای #307fe2 با کنتراست بهتر */
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* web.shahrzadcity.ir — extracted by Pagemonster */
+/* Framework: Custom System (100% match) | Health Score: 100/100 (Grade A) */
+
+:root {
+  /* Colors */
+  --color-neutral-140: #393939;
+  --color-neutral-150: #2f2f2f;
+  --color-yellow-40: #fd9;
+  --color-yellow-180: #320;
+  --color-primary-190: #030d18;
+  --color-yellow-60: #fc6;
+  --color-dim-blue-160: #171d26;
+  --color-neutral-10: #efefef;
+  --color-yellow-30: #ffe5b3;
+  --color-content-primary-brand-hover: #1c66c1;
+  --color-dim-blue-50: #9ca3af;
+  --color-primary-5: #f5f9fe;
+  --color-red-60: #f06b70;
+  --color-critical-4: #fefafa;
+  --color-dim-blue-90: #4d5a70;
+  --color-dim-blue-10: #ebedef;
+  --color-red-180: #57090b;
+  --color-neutral-130: #424242;
+  --color-dim-blue-30: #c4c8cf;
+  --color-primary-160: #0e3360;
+  --color-red-140: #980f14;
+  --color-primary-10: #eaf2fc;
+  --color-neutral-40: #bfbfbf;
+  --color-green-180: #00402e;
+  --color-white: #fff;
+  --color-brand-pink: #e45dbf;
+  --color-brand-light-green: #97d700;
+  --color-yellow-130: #b37700;
+  --color-neutral-hover: #fcfcfc;
+  --color-red-5: #fdf3f4;
+  --color-dim-blue-190: #06070a;
+  --color-stroke-neutral: #f7f7f7;
+  --color-critical-hover: #b91218;
+  --color-neutral-glass-black-10: #000;
+  --shadow-bottom-sheet:
+    0px 0px 12px 0px rgba(0, 0, 0, 0.1), 0px 0px 4px 0px rgba(0, 0, 0, 0.04);
+  --color-content-neutral-2: #4b4b4b;
+  --color-brand-yellow: #ffc600;
+  --color-yellow-90: #ffb31a;
+  --color-dim-blue-150: #1d2430;
+  --color-green-30: #b2e7cd;
+  --color-yellow-140: #960;
+  --color-green-40: #99dfbd;
+  --color-yellow-20: #fec;
+  --color-primary-70: #6fa7ea;
+  --color-primary-60: #84b3ed;
+  --color-neutral-60: #9f9f9f;
+  --color-yellow-50: #ffd480;
+  --color-yellow-10: #fff7e5;
+  --color-content-neutral-disable: #cfcfcf;
+  --color-stroke-primary-brand-press: #154c91;
+  --color-green-140: #007844;
+  --color-stroke-primary-brand: #307fe2;
+  --color-content-neutral-3: #7e7e7e;
+  --color-content-approve: #00af5a;
+  --color-content-neutral: #1c1c1c;
+  --color-neutral-gray: #5e5e5e;
+  --color-yellow-190: #1a1100;
+  --color-yellow-80: #fb3;
+  --color-primary-110: #1f73d9;
+  --color-neutral-110: #555;
+  --color-dim-blue-140: #222b3a;
+  --color-primary-130: #1859a9;
+  --color-dim-blue-120: #2e3a4d;
+  --color-yellow-110: #e69900;
+  --color-primary-2: #fbfcfe;
+  --color-red-40: #f59da0;
+  --color-neutral-20: #dfdfdf;
+  --color-dim-blue-110: #334156;
+  --color-yellow-150: #805500;
+  --color-neutral-90: #6e6e6e;
+  --color-content-critical: #d9151c;
+  --color-green-160: #005c39;
+  --color-dim-blue-70: #747f90;
+  --color-green-60: #66cf9c;
+  --color-primary-180: #071930;
+  --color-yellow-70: #ffc34d;
+  --color-neutral-160: #262626;
+  --color-red-10: #fce8e9;
+  --color-neutral-70: #8f8f8f;
+  --color-primary-brand-3-press: #c1d9f6;
+  --swiper-theme-color: #007aff;
+  --color-green-80: #33bf7b;
+  --color-stroke-primary-brand-2: #d6e6f9;
+  --color-primary-80: #5b9ae8;
+  --color-dim-blue-40: #b0b6bf;
+  --color-stroke-warning: #fa0;
+  --color-brand-purple: #753bbd;
+  --color-red-1: #fffdfd;
+  --color-dim-blue-primary: #394860;
+  --color-primary-40: #adcdf3;
+  --color-brand-turquoise-surf: #05c3de;
+  --color-primary-150: #114078;
+  --color-dim-blue-60: #8891a0;
+  --color-red-160: #780c0f;
+  --color-approve-3: #e5f7ee;
+  --color-neutral-50: #afafaf;
+  --color-green-2: #fafdfc;
+  --color-dim-blue-170: #11161d;
+  --color-green-5: #f2fbf6;
+  --color-dim-blue-20: #d7dadf;
+  --color-dim-blue-130: #283243;
+  --color-yellow-120: #c80;
+  --color-dim-blue-180: #0b0e13;
+  --color-brand-amaranth: #d12630;
+  --color-dim-blue-80: #616d80;
+  --color-approve-hover: #00934f;
+  --color-primary-170: #0a2648;
+  --color-dim-blue-5: #f5f6f7;
+  --color-stroke-critical-2: #facecf;
+  --color-primary-90: #468ee5;
+  --color-stroke-approve-2: #ccefde;
+  --color-brand-green: #00af66;
+  --color-neutral-190: #090909;
+  --color-brand-beer: #ed8c00;
+  --color-yellow-160: #640;
+  --color-red-80: #ec3a40;
+  --color-yellow-170: #4d3300;
+  --color-neutral-180: #131313;
+  --color-dim-blue-2: #fbfbfc;
+  --color-primary-50: #98c0f0;
+  --surface-elevated: #ffffff;
+
+  /* Typography */
+  --font-display: IRANSans;
+  --size-xs: 12px;
+  --size-sm: 14px;
+  --size-base: 16px;
+
+  /* Typography Scale */
+  --p-font-size: 14px;
+  --p-font-weight: 700;
+  --p-line-height: 22.001px;
+
+  /* Spacing Scale */
+  --space-8px: 8px;
+  --space-12px: 12px;
+  --space-16px: 16px;
+  --space-24px: 24px;
+  --space-28px: 28px;
+  --space-40px: 40px;
+  --space-48px: 48px;
+  --space-64px: 64px;
+  --space-112px: 112px;
+
+  /* Border Radius */
+  --radius-1: 0px;
+  --radius-5: 12px;
+  --radius-3: 30px;
+  --radius-4: 40px;
+  --radius-2: 50px;
+
+  /* Elevation & Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Component Utility Classes */
+.btn-primary {
+  background-color: #307fe2;
+  color: #ffffff;
+  border-radius: 0px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-secondary {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-radius: 0px;
+  padding: 10px 20px;
+  font-weight: 500;
+  font-size: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+}
+.btn-3 {
+  background-color: transparent;
+  color: #307fe2;
+  border-radius: 0px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1.5px solid #307fe2;
+  transition: all 0.2s ease;
+}
+.card-surface {
+  background-color: #18181b;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+}
+.input-field {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0px;
+  padding: 10px 14px;
 }
