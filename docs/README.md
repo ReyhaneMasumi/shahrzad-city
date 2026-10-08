@@ -15,7 +15,8 @@
 | `architecture/10-docs-and-deprecations.md` | Where to read current docs, MCP servers, deprecation watchlist |
 | `architecture/11-agent-conventions.md` | Official Next.js agent workflow and Airbnb React conventions |
 | `DECISIONS.md` | Decision log (ADR-lite) used to explain the project |
-| `PLAN-structure.md`, `PLAN.md` | Produced during the planning phase |
+| `PLAN-structure.md` | Step B: proposed structure, tooling and decisions to confirm |
+| `PLAN.md` | Produced during the planning phase |
 | `audit/SHAHRZAD-UI-AUDIT.md` | Findings from the reference site (a11y + backlog) |
 | `audit/STEP-A-FINDINGS.md` | Structured reference-site investigation (Step A, 2026-10-08) |
 | `audit/visual-findings.md` | Per-section geometry, typography, color and spacing tables |
