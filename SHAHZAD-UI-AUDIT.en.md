@@ -1,13 +1,13 @@
 # Shahrzadcity.ir — UI/UX Audit Report + Backlog
 
-> **دامنه:** `https://web.shahrzadcity.ir`
-> **تاریخ:** ۲۰۲۶/۱۰/۰۸
-> **روش:** بررسی DOM، computed styles، accessibility tree و محاسبه‌ی کنتراست
+> **Domain:** `https://web.shahrzadcity.ir`
+> **Date:** ۲۰۲۶/۱۰/۰۸
+> **Method:** DOM, computed styles, accessibility tree, and contrast calculation
 > با مرورگر headless (بدون دسترسی تصویری).
 >
-> **پوشش:** صفحات عمومی (`/faq`)، جریان ورود (`/login-register` → `/login-otp` → `/home`)
+> **Coverage:** public pages (`/faq`)، login flow (`/login-register` → `/login-otp` → `/home`)
 >
-> **پوشش داده‌نشده:** پشت login عمیق‌تر از `/home` (نقشه، تاکسی، پرداخت) و ارزیابی بصری
+> **پوشش داده‌نشده:** پشت login عمیق‌تر از `/home` (map, taxi, payment) و ارزیابی بصری
 > (چیدمان، فاصله‌گذاری، توازن، animation).
 
 **Status هر آیتم:** `Open` | `In progress` | `Done` | `Wontfix`
@@ -77,7 +77,7 @@ container → role: null, aria-label: null
 | **`/home` (بعد از لاگین)** | **`en`** ❌ | **`""`** ❌ |
 | `/login-register` | **`en`** ❌ | **`""`** ❌ |
 
-الگو مشخص: صفحات عمومی درست، **پوسته‌ی اپ و auth غلط**.
+الگو مشخص: public pages درست، **پوسته‌ی اپ و auth غلط**.
 RTL فقط با `direction: rtl` روی `body` اعمال شده، نه `dir` روی `<html>` →
 روی `::before/::after`، ترتیب خواندن صفحه‌خوان و logical properties اثر می‌گذارد.
 
@@ -163,7 +163,7 @@ image بدون نام اعلام می‌شود. تصاویر تزئینی بای
 | `M9` | `aria-expanded` بدون `aria-controls` | `18 aria-expanded`، `18 ariaControlsMissing` | id پنل + `aria-controls` | 1.3.1 | `Open` |
 | `M10` | فیلترهای FAQ بدون state | `aria-pressed: null` روی همه‌ی chipها | `aria-pressed` | 4.1.2 | `Open` |
 
-### ⚪ مشترک با جریان ورود (هم‌دسته‌ی C1–C4)
+### ⚪ مشترک با login flow (هم‌دسته‌ی C1–C4)
 
 | ID | مشکل | Criterion | Fix | WCAG | Status |
 |---|---|---|---|---|---|
@@ -211,10 +211,10 @@ image بدون نام اعلام می‌شود. تصاویر تزئینی بای
 **انجام‌نشده (Limitation):**
 1. **ارزیابی بصری** — مدل تحلیل‌گر تصویر نمی‌خواند؛ پس چیدمان، فضای خالی،
    توازن، ریتم بصری و animation بررسی نشد.
-2. **بخش‌های احراز هویت‌شده‌ی عمیق** — نقشه، تاکسی، کیف پول، پرداخت، جستجو.
-3. **حالت‌های خطا و خالی** — فقط حالت عادی دیده شد.
-4. **تست کیبورد و صفحه‌خوان واقعی** — فقط ساختار DOM استخراج شد، نه تجربه‌ی واقعی.
-5. **لایت‌باکس/کاروسل** — چون تصویر خوانده نشد، رفتار آن‌ها بررسی نشد.
+2. **deeper authenticated sections** — نقشه، تاکسی، کیف پول، پرداخت، جستجو.
+3. **error/empty states** — فقط حالت عادی دیده شد.
+4. **real keyboard/screen reader testing** — فقط ساختار DOM استخراج شد، نه تجربه‌ی واقعی.
+5. **lightbox/carousel** — چون تصویر خوانده نشد، رفتار آن‌ها بررسی نشد.
 
 برای بند ۱ و ۵ از مدل دارای قابلیت بصری استفاده کن.
 
@@ -224,6 +224,6 @@ image بدون نام اعلام می‌شود. تصاویر تزئینی بای
 |---|---|---|---|---|
 | `V1` | تراز شدن شبکه سرویس‌ها (icons grid) در mobile — شلوغ به‌نظر می‌رسد | Minor | کاهش gap یا افزایش ستون در breakpointهای کوچک‌تر | `Open` |
 | `V2` | «مشاهده همه» بیش از حد نزدیک به عنوان بخش است | Minor | فاصله عمودی بیشتر بین «خدمات شهرزاد» و CTA | `Open` |
-| `V3` | برچسب‌های 10px زیر حد خوانایی توصیه‌شده برای فارسی عمومی | Major | افزایش به ۱۲–۱۴px حداقل | `Open` |
+| `V3` | برچسب‌های 10px زیر حد خوانایی recommended for general Persian text | Major | افزایش به ۱۲–۱۴px حداقل | `Open` |
 | `V4` | رنگ‌های آبی متفاوت بین primary (#307fe2) و theme (#1C66C1) | Major | یکسان‌سازی → #1C66C1 | `Open` |
 | `V5` | «دریافت مجدد کد» به‌صورت پاراگراف کلیک‌پذیر | Critical | تبدیل به `<button>` یا حداقل `role=button`+`tabIndex=0` | `Open` |

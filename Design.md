@@ -1,6 +1,6 @@
-# طراحی visual برای opencode
+# Visual design guide for opencode
 
-- از screenshots  visuals/\* استفاده کن.
+- Use screenshots from  visuals/\* استفاده کن.
 - Only judge visually.
 - For each suggestion, include scope, severity (Critical/Major/Minor), and concrete fix.
 - Strengths را هم محفوظ کن.

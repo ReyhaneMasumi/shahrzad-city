@@ -1,21 +1,21 @@
 # Shahrzad — UI/UX & Accessibility (A11y) Rules
 
-این فایل **نقطه‌ی ورود opencode** است و در تمام sessionها بارگذاری می‌شود.
-به‌همین دلیل عمداً کوتاه و اجرایی نگه داشته شده. جزئیات‌ها و backlog در فایل دوم است.
+This file is the entry point for opencode and is loaded in every session.
+Keep it short and actionable. Details and backlog are in the second file.
 
 ---
 
 ## ۰. Lazy loading (lazy) — Before any UI work
 
-**CRITICAL:** برای هر کاری که به دانستن Status فعلی سایت نیاز دارد، اول این فایل را بخوان:
+**CRITICAL:** Before any UI work that needs current site state, read this file first:
 
 ```
 @SHAHZAD-UI-AUDIT.md
 ```
 
 - فقط وقتی لازم است بخوان — یعنی وظیفه‌ی در دسترس‌پذیری، رفع باگ UI، یا مرور backlog.
-- وقتی خواندی، محتوایش را **اجباری** بدان و بر defaultها اولویت می‌دهد.
-- Status هر آیتم (Open / Done / Wontfix) را بعد از هر تغییر در همان فایل به‌روزرسانی کن.
+- Treat its contents as mandatory and higher priority than defaults.
+- Update each item status (Open/Done/Wontfix) after any change.
 
 ---
 
@@ -52,7 +52,7 @@
 5. **ممنوع:** صفحه بدون `H1`. سلسله‌مراتب heading نباید بپرد (H3 بعد از H1 بدون H2 ممنوع).
 6. **ممنوع:** صفحه بدون `<main>`. landmarks الزامی‌اند: `header` / `nav` / `main` / `footer`.
 7. **ممنوع:** لینکی که بدون بازخورد به همان صفحه برمی‌گردد (شکست خاموش). یا مقصد واقعی بده، یا `disabled` کن، یا toast «به‌زودی» نشان بده.
-8. **ممنوع:** فونت زیر 12px برای متن اصلی. فونت پایه‌ی صفحات عمومی عمداً 16px باشد.
+8. **ممنوع:** فونت زیر 12px برای متن اصلی. فونت پایه‌ی public pages عمداً 16px باشد.
 9. **ممنوع:** رنگ primary با کنتراست کمتر از 4.5:1 روی سفید. `#307fe2` = 3.99 FAIL. `#1C66C1` = 5.65 PASS.
 10. **ممنوع:** فیلتر/accordion بدون state اعلام‌شده: `aria-pressed` برای toggle، `aria-expanded` **و** `aria-controls` برای accordion.
 
