@@ -5,10 +5,16 @@
 > **Method:** DOM, computed styles, accessibility tree, and contrast calculation
 > با مرورگر headless (بدون دسترسی تصویری).
 >
+> **Update (Step A, 2026-10-08):** the layout/visual portion was measured via DOM
+> geometry — see `docs/audit/STEP-A-FINDINGS.md` (structure, components, network,
+> fonts) and `docs/audit/visual-findings.md` (geometry, typography, colors, spacing).
+> Screenshots under `visuals/` use the `<section>--<viewport>--<state>.png` naming.
+>
 > **Coverage:** public pages (`/faq`)، login flow (`/login-register` → `/login-otp` → `/home`)
 >
-> **پوشش داده‌نشده:** پشت login عمیق‌تر از `/home` (map, taxi, payment) و ارزیابی بصری
-> (چیدمان، فاصله‌گذاری، توازن، animation).
+> **پوشش داده‌نشده:** پشت login عمیق‌تر از `/home` (map, taxi, payment) و تفسیر
+> پیکسلی دقیق (گرادیان‌ها، سایه‌ها، جزئیات تصویرسازی) — برای این مورد اسکرین‌شات‌ها
+> در `visuals/` آماده‌اند تا با مدل دارای قابلیت بصری برداشت شوند.
 
 **Status هر آیتم:** `Open` | `In progress` | `Done` | `Wontfix`
 
