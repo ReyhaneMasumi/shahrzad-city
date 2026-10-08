@@ -96,5 +96,5 @@ scrollWidth vs clientWidth, console errors, failed requests
 2. قبل از تغییر، baseline بگیر و ثبت کن.
 3. تغییر را در کوچک‌ترین واحد ممکن اعمال کن.
 4. اندازه‌گیری بعدی → مقایسه با baseline.
-5. Status آیتم در audit را به‌روزرسانی کن.
-6. commit با پیامی که شماره‌ی آیتم را داشته باشد.
+5. Update item status in audit after changes.
+6. Commit with item ID in message.
