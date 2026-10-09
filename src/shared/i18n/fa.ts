@@ -20,4 +20,14 @@ export const fa = {
     message: 'صفحه‌ای که دنبال آن بودید وجود ندارد.',
     backHome: 'بازگشت به خانه',
   },
+  common: {
+    seeAll: 'مشاهده همه',
+  },
+  carousel: {
+    region: 'اسلایدها',
+    previousSlide: 'اسلاید قبلی',
+    nextSlide: 'اسلاید بعدی',
+    goToSlide: (index: number) => `رفتن به اسلاید ${index}`,
+    slideLabel: (index: number, total: number) => `اسلاید ${index} از ${total}`,
+  },
 } as const;

@@ -1,8 +1,13 @@
 export { default as Button } from './Button';
+export { default as Carousel } from './Carousel/Carousel';
 export { default as Container } from './Container';
 export { default as Empty } from './Empty';
 export { default as ErrorState } from './ErrorState';
 export { default as Icon } from './Icon';
 export { default as Image } from './Image';
+export { default as NavItem } from './NavItem/NavItem';
+export { default as SectionHead } from './SectionHead/SectionHead';
+export { default as SectionStates } from './SectionStates/SectionStates';
 export { default as Skeleton } from './Skeleton';
 export { default as Spinner } from './Spinner';
+export { default as Tile } from './Tile/Tile';

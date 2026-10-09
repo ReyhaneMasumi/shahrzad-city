@@ -12,9 +12,7 @@ export default function Empty({ message, action }: EmptyProps) {
     >
       <Icon icon={FolderOpen} size={48} className="text-content-tertiary" />
       <p className="text-heading-sm text-content-primary">{fa.empty.title}</p>
-      {message === undefined ? null : (
-        <p className="text-body-sm text-content-tertiary">{message}</p>
-      )}
+      <p className="text-body-sm text-content-tertiary">{message ?? fa.empty.message}</p>
       {action}
     </div>
   );

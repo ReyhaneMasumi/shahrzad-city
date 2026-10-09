@@ -11,9 +11,11 @@ export default function ErrorState({ onRetry, message }: ErrorStateProps) {
       <Icon icon={Warning2} size={48} className="text-critical" />
       <p className="text-heading-sm text-content-primary">{fa.error.title}</p>
       <p className="text-body-sm text-content-secondary">{message ?? fa.error.message}</p>
-      <Button variant="secondary" size="sm" onClick={onRetry}>
-        {fa.error.retry}
-      </Button>
+      {onRetry === undefined ? null : (
+        <Button variant="secondary" size="sm" onClick={onRetry}>
+          {fa.error.retry}
+        </Button>
+      )}
     </div>
   );
 }
