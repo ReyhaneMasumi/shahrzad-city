@@ -40,7 +40,6 @@ export const fa = {
     notifications: { label: 'اعلان‌ها' },
   },
   carousel: {
-    region: 'اسلایدها',
     previousSlide: 'اسلاید قبلی',
     nextSlide: 'اسلاید بعدی',
     goToSlide: (index: number) => `رفتن به اسلاید ${index}`,
