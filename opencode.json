@@ -15,43 +15,22 @@
     },
     "next-devtools": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "next-devtools-mcp@latest"
-      ],
+      "command": ["npx", "-y", "next-devtools-mcp@latest"],
       "enabled": true
     },
     "antd": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@ant-design/cli",
-        "mcp"
-      ],
+      "command": ["npx", "-y", "@ant-design/cli", "mcp"],
       "enabled": true
     },
     "playwright": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@playwright/mcp@latest",
-        "--headless",
-        "--isolated"
-      ],
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--headless", "--isolated"],
       "enabled": true
     },
     "chrome-devtools": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@latest",
-        "--headless=true",
-        "--isolated=true"
-      ],
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--headless=true", "--isolated=true"],
       "enabled": false
     }
   },
@@ -76,9 +55,13 @@
     }
   },
   "agent": {
+    "general": {
+      "model": "opencode/big-pickle"
+    },
     "reviewer": {
       "description": "Read-only reviewer. Checks a change against AGENTS.md and docs/architecture before commit.",
       "mode": "subagent",
+      "model": "opencode/big-pickle",
       "prompt": "{file:./.opencode/prompts/reviewer.md}",
       "permission": {
         "edit": "deny",
