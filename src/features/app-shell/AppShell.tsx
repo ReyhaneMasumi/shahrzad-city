@@ -19,11 +19,11 @@ export default function AppShell({ children }: AppShellProps) {
     <div className="relative flex h-dvh flex-col overflow-hidden bg-surface">
       <AppHeader scrolled={scrolled} />
 
-      <div className="relative min-h-0 flex-1 lg:-mt-12">
+      <div className="pointer-events-none relative min-h-0 flex-1 lg:-mt-12">
         <main
           ref={scrollRef}
           data-testid="shell-scroll"
-          className="absolute inset-x-4 top-[152px] bottom-0 overflow-y-auto overscroll-contain rounded-[var(--radius-40)] bg-surface p-3 pb-[92px] lg:static lg:mx-auto lg:h-full lg:w-full lg:max-w-[900px] lg:rounded-none lg:pb-0"
+          className="pointer-events-auto absolute inset-x-4 top-[152px] bottom-0 overflow-y-auto overscroll-contain rounded-[var(--radius-40)] bg-surface p-3 pb-[92px] lg:static lg:mx-auto lg:h-full lg:w-full lg:max-w-[900px] lg:rounded-none lg:pb-0"
         >
           <div aria-hidden data-sentinel="top" className="block h-px w-full" />
           {children}

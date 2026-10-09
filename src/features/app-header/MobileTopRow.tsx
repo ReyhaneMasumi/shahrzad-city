@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Notification, Scan, User } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
 import Icon from '@/shared/ui/Icon';
@@ -27,13 +28,13 @@ export default function MobileTopRow() {
         >
           <Icon icon={Notification} size={24} />
         </button>
-        <a
+        <Link
           href={fa.header.qr.href}
           aria-label={fa.header.qr.label}
           className="grid size-11 place-items-center text-content-inverse"
         >
           <Icon icon={Scan} size={24} />
-        </a>
+        </Link>
       </div>
     </div>
   );

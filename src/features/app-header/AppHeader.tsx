@@ -34,7 +34,7 @@ export default function AppHeader({ scrolled }: AppHeaderProps) {
               <button
                 type="button"
                 aria-label={fa.header.notifications.label}
-                className="grid size-11 place-items-center rounded-[var(--radius-12)] border border-white/20 bg-white/10 text-content-inverse"
+                className="grid size-11 place-items-center rounded-[var(--radius-12)] border border-content-inverse/20 bg-content-inverse/10 text-content-inverse"
               >
                 <Icon icon={Notification} size={24} />
               </button>

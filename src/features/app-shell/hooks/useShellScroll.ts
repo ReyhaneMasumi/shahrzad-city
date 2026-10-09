@@ -30,7 +30,12 @@ export function useShellScroll(ref: RefObject<HTMLElement | null>): ShellScrollS
     if (root === null) return;
     const topSentinel = root.querySelector<HTMLElement>('[data-sentinel="top"]');
     const bottomSentinel = root.querySelector<HTMLElement>('[data-sentinel="bottom"]');
-    if (topSentinel === null || bottomSentinel === null) return;
+    if (topSentinel === null || bottomSentinel === null) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('useShellScroll: scroll sentinels not found inside the scroll container');
+      }
+      return;
+    }
 
     const topObserver = new IntersectionObserver(
       ([entry]) => {

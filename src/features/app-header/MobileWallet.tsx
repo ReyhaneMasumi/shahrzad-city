@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ArrowLeft } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
 import Icon from '@/shared/ui/Icon';
@@ -5,7 +6,7 @@ import Icon from '@/shared/ui/Icon';
 /** Wallet row shown under the mobile logo. */
 export default function MobileWallet() {
   return (
-    <a
+    <Link
       href={fa.header.wallet.href}
       className="flex h-12 items-center justify-between px-sm text-content-inverse"
     >
@@ -14,6 +15,6 @@ export default function MobileWallet() {
         {fa.header.wallet.viewBalance}
         <Icon icon={ArrowLeft} size={20} />
       </span>
-    </a>
+    </Link>
   );
 }

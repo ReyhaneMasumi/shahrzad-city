@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ArrowDown2 } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
 import Icon from '@/shared/ui/Icon';
@@ -15,13 +16,13 @@ export default function DesktopNav() {
       <ul className="flex items-center gap-lg text-body-md text-content-inverse">
         {LINKS.map((link) => (
           <li key={link.key}>
-            <a
+            <Link
               href={link.href}
               className="inline-flex items-center gap-2xs motion-safe:transition-opacity motion-safe:hover:opacity-80"
             >
               {link.label}
               {link.chevron ? <Icon icon={ArrowDown2} size={16} /> : null}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

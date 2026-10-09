@@ -144,3 +144,20 @@ Format:
   homepage needs for SEO/first paint. The self-hosted font, antd RTL/locale and SWR providers remain. Cache
   Components and Partial Prefetching can be re-evaluated later with the `next-cache-components-adoption` /
   `next-partial-prefetching-adoption` skills once antd publishes prerender-safe internals.
+
+## D-021 Responsive shell breakpoint and header structure branching
+- Date: 2026-10-09
+- Status: accepted
+- Context: the reference defines two shells — a mobile/tablet shell and a desktop shell — but was only
+  measured at 768 (mobile shell) and 1440 (desktop shell). The rebuild needs one breakpoint at which the
+  shell switches, and a rule for how `AppHeader` chooses its (structurally different) desktop vs mobile markup.
+- Options: (a) split at `md` 768 (tablet gets the desktop shell); (b) split at `lg` 1024 (tablet keeps the
+  mobile shell); header markup via JS `useMediaQuery` vs CSS `hidden lg:flex` visibility toggling.
+- Decision: desktop shell at Tailwind `lg` (≥64rem = 1024px); mobile + tablet (<1024, including 768) keep the
+  mobile shell. 1024 is the midpoint between the two measured viewports. `AppHeader` branches its structure in
+  JS with `useMediaQuery('(min-width: 64rem)')`; the server snapshot is `false`, so the mobile markup is the
+  hydration render and desktop markup is applied by `useSyncExternalStore` after hydration (no mismatch).
+- Consequences: the desktop nav links are absent from the mobile SSR/initial HTML and only appear on desktop
+  (client-side re-render) — acceptable because this is an interactive shell, and it keeps a single header
+  structure in the DOM instead of two duplicate trees. The tablet (768) shell stays mobile until/unless the
+  reference is re-measured; changing the split is a single `lg`/`64rem` constant.
