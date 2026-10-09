@@ -1,0 +1,12 @@
+/*
+ * Global CSS layer order. Declared before Tailwind's own layer statement in
+ * index.css so the `antd` layer sits between base and components. Ant Design v6
+ * emits its styles into this layer via <StyleProvider layer> (see
+ * src/providers/antd-registry.tsx), letting Tailwind utilities override them
+ * without `!important`.
+ */
+@layer theme, base, antd, components, utilities;
+
+@layer antd {
+  /* Ant Design styles are injected here at runtime. */
+}

@@ -31,5 +31,9 @@ export default function AntdRegistry({ children }: PropsWithChildren) {
       />
     );
   });
-  return <StyleProvider cache={cache}>{children}</StyleProvider>;
+  return (
+    <StyleProvider cache={cache} layer>
+      {children}
+    </StyleProvider>
+  );
 }

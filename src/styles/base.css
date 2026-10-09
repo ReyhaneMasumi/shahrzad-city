@@ -1,0 +1,48 @@
+/*
+ * Base element styles. Component visuals live in @layer components.
+ * Physical-direction properties are intentionally absent: the layout is RTL-first
+ * and uses logical utilities only.
+ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html[dir='rtl'] {
+    direction: rtl;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-surface);
+    color: var(--color-content-primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary-brand);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-primary-10);
+    color: var(--color-content-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+/*
+ * Typography: base body defaults plus static @utility classes for the type scale.
+ * Sizes come from tokens.css (fluid clamp); Persian body line-height is generous
+ * and letter-spacing stays at zero (never negative for Persian).
+ */
+@layer base {
+  body {
+    font-size: var(--type-body-md-size);
+    line-height: var(--leading-body);
+    letter-spacing: 0;
+  }
+}
+
+@utility text-display {
+  font-size: var(--type-display-size);
+  line-height: var(--leading-display);
+  letter-spacing: 0;
+}
+
+@utility text-heading-lg {
+  font-size: var(--type-heading-lg-size);
+  line-height: var(--leading-heading);
+  letter-spacing: 0;
+}
+
+@utility text-heading-md {
+  font-size: var(--type-heading-md-size);
+  line-height: var(--leading-heading);
+  letter-spacing: 0;
+}
+
+@utility text-heading-sm {
+  font-size: var(--type-heading-sm-size);
+  line-height: var(--leading-heading);
+  letter-spacing: 0;
+}
+
+@utility text-body-lg {
+  font-size: var(--type-body-lg-size);
+  line-height: var(--leading-body);
+  letter-spacing: 0;
+}
+
+@utility text-body-md {
+  font-size: var(--type-body-md-size);
+  line-height: var(--leading-body);
+  letter-spacing: 0;
+}
+
+@utility text-body-sm {
+  font-size: var(--type-body-sm-size);
+  line-height: var(--leading-body);
+  letter-spacing: 0;
+}
+
+@utility text-caption {
+  font-size: var(--type-caption-size);
+  line-height: var(--leading-body);
+  letter-spacing: 0;
+}

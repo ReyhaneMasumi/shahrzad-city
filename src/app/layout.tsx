@@ -4,7 +4,7 @@ import AntdRegistry from '@/providers/antd-registry';
 import Providers from '@/providers';
 import { fa } from '@/shared/i18n/fa';
 import { iransans } from './fonts';
-import './globals.css';
+import '@/styles/index.css';
 
 export const metadata: Metadata = {
   title: {

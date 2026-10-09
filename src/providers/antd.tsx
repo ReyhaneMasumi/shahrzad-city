@@ -12,7 +12,17 @@ export default function AntdProvider({ children }: PropsWithChildren) {
       theme={{
         cssVar: { key: 'app' },
         token: {
-          fontFamily: 'var(--font-iransans)',
+          colorPrimary: '#307FE2',
+          colorInfo: '#307FE2',
+          colorLink: '#1C66C1',
+          colorLinkHover: '#154C91',
+          colorText: '#1C1C1C',
+          colorTextSecondary: '#4B4B4B',
+          fontFamily: 'var(--font-sans)',
+          borderRadius: 12,
+          controlHeight: 40,
+          controlHeightSM: 32,
+          controlHeightLG: 48,
         },
       }}
     >
