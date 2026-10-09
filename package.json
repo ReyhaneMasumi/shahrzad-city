@@ -19,7 +19,9 @@
   "dependencies": {
     "@ant-design/cssinjs": "^2.1.2",
     "antd": "^6.6.5",
+    "axios": "1.20.0",
     "iconsax-react": "0.0.8",
+    "msw": "2.11.1",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -58,5 +60,10 @@
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@10.34.6"
+  "packageManager": "pnpm@10.34.6",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }

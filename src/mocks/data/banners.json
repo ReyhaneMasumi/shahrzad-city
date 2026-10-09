@@ -1,0 +1,15 @@
+[
+  {
+    "id": 49,
+    "name": "طرح ترافیک روزانه و ماهانه",
+    "order": 3,
+    "image": "https://static.shahrzadcity.ir/base/banner/B1LyrIbcRf.jpg",
+    "url": "https://web.shahrzadcity.ir/app/vehicle/traffic-plan",
+    "bannerType": "main_page",
+    "pageChoice": "shahrzad_pwa",
+    "position": "top",
+    "target": "pwa",
+    "linkedTile": null,
+    "authMethod": "refresh"
+  }
+]
