@@ -2,6 +2,9 @@
 
 import { useRef } from 'react';
 import { AppHeader } from '@/features/app-header';
+import { AppFooter } from '@/features/app-footer';
+import { BottomNav } from '@/features/bottom-nav';
+import { BackToTop } from '@/features/back-to-top';
 import type { AppShellProps } from './AppShell.types';
 import { useShellScroll } from './hooks/useShellScroll';
 
@@ -13,7 +16,7 @@ import { useShellScroll } from './hooks/useShellScroll';
  */
 export default function AppShell({ children }: AppShellProps) {
   const scrollRef = useRef<HTMLElement>(null);
-  const { scrolled } = useShellScroll(scrollRef);
+  const { scrolled, atBottom, scrollToTop } = useShellScroll(scrollRef);
 
   return (
     <div className="relative flex h-dvh flex-col overflow-hidden bg-surface">
@@ -27,15 +30,13 @@ export default function AppShell({ children }: AppShellProps) {
         >
           <div aria-hidden data-sentinel="top" className="block h-px w-full" />
           {children}
+          <BackToTop onClick={scrollToTop} />
           <div aria-hidden data-sentinel="bottom" className="block h-px w-full" />
         </main>
       </div>
 
-      {/*
-        Task 7 slots (P6b): the desktop AppFooter (fixed, revealed on `atBottom`)
-        and the mobile-only BottomNav + BackToTop render at this root level.
-        The mobile bottom-nav height is reserved by `pb-[92px]` on the scroll container.
-      */}
+      <AppFooter revealed={atBottom} />
+      <BottomNav />
     </div>
   );
 }

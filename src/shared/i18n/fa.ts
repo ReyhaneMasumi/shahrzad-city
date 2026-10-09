@@ -45,4 +45,21 @@ export const fa = {
     goToSlide: (index: number) => `رفتن به اسلاید ${index}`,
     slideLabel: (index: number, total: number) => `اسلاید ${index} از ${total}`,
   },
+  footer: {
+    brandAlt: 'شهرزاد',
+    links: [
+      { label: 'درباره شهرزاد', href: '/about-shahrzad', external: false },
+      { label: 'قوانین سایت', href: '/privacy', external: false },
+      { label: 'تماس با ما', href: 'https://shahrzadcity.ir/contact', external: true },
+      { label: 'پرسش های متداول', href: '/faq', external: false },
+      { label: 'اپلیکیشن موبایل', href: 'https://shahrzadcity.ir/download-app', external: true },
+    ] as const,
+  },
+  bottomNav: {
+    navLabel: 'پایین صفحه',
+    wallet: 'کیف پول',
+    services: 'خدمات',
+    qr: 'پرداخت',
+  },
+  backToTop: 'بازگشت به بالا',
 } as const;
