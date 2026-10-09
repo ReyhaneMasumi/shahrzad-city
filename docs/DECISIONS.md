@@ -108,3 +108,19 @@ Format:
   started from `instrumentation.ts` on the server (SSR, build-time prerender, standalone production).
 - Consequences: single self-contained image; `API.md` paths work unchanged; verify `instrumentation.ts`
   runs during `next build` prerender before relying on it (see PLAN P5 risk).
+
+## D-019 P1 tooling choices
+- Date: 2026-10-09
+- Status: accepted
+- Context: bootstrap lint, formatting, type-checking and git tooling for the scaffolded app.
+- Options: ESLint 9 flat config (Next 16 style) vs legacy `.eslintrc`; ESLint 10 (latest on the package
+  mirror) vs 9.39.5 pinned by create-next-app; `@vitest/eslint-plugin` vs deprecated `eslint-plugin-vitest`.
+- Decision: ship the create-next-app pins (ESLint 9, TS 5.9) and build a flat config on top of
+  `eslint-config-next` — type-aware `typescript-eslint` rules (no-explicit-any, no-non-null-assertion,
+  no-floating-promises, switch-exhaustiveness-check, no-unnecessary-condition), `react/no-multi-comp`,
+  `import/no-cycle`, banned legacy Next imports, `@vitest/eslint-plugin` + `eslint-plugin-testing-library`
+  + `eslint-plugin-playwright` for test files, `eslint-config-prettier` last, and a `scripts/check-no-persian.mjs`
+  gate wired into `pnpm lint`.
+- Consequences: `pnpm verify` = lint + typecheck + vitest + build; Husky pre-commit runs lint-staged
+  (eslint --fix + prettier); prettier formatting is scoped to code + `src|scripts|tests` markdown so it never
+  rewrites docs. Deprecated plugins (`eslint-plugin-vitest`, ESLint 10) are intentionally avoided.
