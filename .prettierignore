@@ -1,0 +1,12 @@
+node_modules
+.next
+.next-docs
+out
+build
+coverage
+playwright-report
+test-results
+docs
+visuals
+public
+pnpm-lock.yaml

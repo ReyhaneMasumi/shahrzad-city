@@ -124,3 +124,23 @@ Format:
 - Consequences: `pnpm verify` = lint + typecheck + vitest + build; Husky pre-commit runs lint-staged
   (eslint --fix + prettier); prettier formatting is scoped to code + `src|scripts|tests` markdown so it never
   rewrites docs. Deprecated plugins (`eslint-plugin-vitest`, ESLint 10) are intentionally avoided.
+
+## D-020 Cache Components deferred (antd v6 + prerender incompatibility)
+- Date: 2026-10-09
+- Status: accepted
+- Context: the scaffold enabled `cacheComponents` and `partialPrefetching`. With Cache Components, Next 16 treats
+  `Date.now()`/`Math.random()` in Client Components during prerender as build-breaking errors. Ant Design v6's
+  CSS-in-JS runtime reads wall-clock time in render-phase hooks (`@ant-design/cssinjs-utils` `useUniqueMemo`,
+  `@ant-design/cssinjs` `createCache`/`supportSelector`), so a statically prerendered `<html>` shell that mounts
+  antd providers cannot pass the guard. A `patches/@ant-design__cssinjs` pnpm patch fixed one occurrence, but the
+  read recurs across antd internals (`useUniqueMemo`, StockStyle `Spin`, `App` holders) and would keep breaking as
+  components are added.
+- Options: (a) keep Cache Components + ship a growing set of pnpm patches over antd; (b) wrap the whole provider
+  tree in `<Suspense>`/`connection()`, making `/` stream at request time and losing static HTML; (c) disable Cache
+  Components and keep classic static prerendering.
+- Decision: **(c)**. `cacheComponents` and `partialPrefetching` are off; `reactCompiler`, `output: standalone`, RTL,
+  SSR style extraction (own `AntdRegistry` with a deterministic cache id) and `next/image` remote patterns are kept.
+- Consequences: `/` and `/_not-found` prerender as static HTML (verified: `○ (Static)`), which is what the
+  homepage needs for SEO/first paint. The self-hosted font, antd RTL/locale and SWR providers remain. Cache
+  Components and Partial Prefetching can be re-evaluated later with the `next-cache-components-adoption` /
+  `next-partial-prefetching-adoption` skills once antd publishes prerender-safe internals.

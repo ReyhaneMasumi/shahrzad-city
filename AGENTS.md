@@ -27,10 +27,13 @@ Your training data is older than the installed libraries. Before writing code th
 5. If no doc source is reachable, say so and ask. Do not guess.
 
 <!-- BEGIN:nextjs-agent-rules -->
-# Next.js: ALWAYS read docs before coding
 
-Before any Next.js work, find and read the relevant doc in `node_modules/next/dist/docs/`.
-Before the project is installed, read the current docs at `https://nextjs.org/docs/app` (append `.md` to a docs URL to get plain markdown) or through the `context7` MCP tool.
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
 <!-- END:nextjs-agent-rules -->
 
 ## 3. Stack (all latest stable; verify with `npm view <pkg> version`)

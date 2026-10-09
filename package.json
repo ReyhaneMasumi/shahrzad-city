@@ -8,19 +8,21 @@
     "start": "next start",
     "preview": "pnpm build && pnpm start",
     "lint": "eslint && node scripts/check-no-persian.mjs",
-    "format": "prettier --write \"**/*.{js,mjs,cjs,ts,tsx,css,scss,json,yml}\" \"{src,scripts,tests}/**/*.md\"",
-    "format:check": "prettier --check \"**/*.{js,mjs,cjs,ts,tsx,css,scss,json,yml}\" \"{src,scripts,tests}/**/*.md\"",
+    "format": "prettier --no-error-on-unmatched-pattern --write \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\" \"tests/**/*.{ts,tsx}\" \"eslint.config.mjs\" \"next.config.ts\" \"prettier.config.mjs\" \"vitest.config.ts\" \"package.json\"",
+    "format:check": "prettier --no-error-on-unmatched-pattern --check \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\" \"tests/**/*.{ts,tsx}\" \"eslint.config.mjs\" \"next.config.ts\" \"prettier.config.mjs\" \"vitest.config.ts\" \"package.json\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
-    "prepare": "husky",
     "prepare": "husky"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^2.1.2",
+    "antd": "^6.6.5",
     "next": "16.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "swr": "^2.5.1"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
