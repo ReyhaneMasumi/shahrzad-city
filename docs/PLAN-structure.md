@@ -1,6 +1,6 @@
 # PLAN — Structure, Tooling and Decisions (Step B)
 
-> Status: proposed — waiting for project owner approval.
+> Status: **accepted 2026-10-08** — decisions ratified by the project owner (all seven defaults).
 > This file answers the Step B requirements of `PROMPT.md` and extends `docs/architecture/01`.
 > All measured reference facts come from `docs/audit/STEP-A-FINDINGS.md` and `docs/audit/visual-findings.md`.
 
