@@ -1,3 +1,51 @@
 @layer components {
-  /* button component styles */
+  .btn {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center rounded-12 text-body-md font-medium transition-colors;
+    transition-duration: var(--motion-duration-base);
+    transition-timing-function: var(--motion-ease-standard);
+  }
+
+  .btn[data-block='true'] {
+    @apply w-full;
+  }
+
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+
+  .btn[data-size='sm'] {
+    @apply px-sm;
+  }
+
+  .btn[data-size='md'] {
+    @apply px-md;
+  }
+
+  .btn[data-size='lg'] {
+    @apply min-h-13 px-lg text-body-lg;
+  }
+
+  .btn[data-variant='primary'] {
+    @apply bg-primary-brand text-content-inverse;
+  }
+
+  .btn[data-variant='primary']:not(:disabled):hover {
+    @apply bg-primary-brand-hover;
+  }
+
+  .btn[data-variant='secondary'] {
+    @apply border border-primary-brand bg-surface text-content-primary;
+  }
+
+  .btn[data-variant='secondary']:not(:disabled):hover {
+    @apply bg-primary-10;
+  }
+
+  .btn[data-variant='ghost'] {
+    @apply bg-transparent text-content-primary;
+  }
+
+  .btn[data-variant='ghost']:not(:disabled):hover {
+    @apply bg-surface-muted;
+  }
 }

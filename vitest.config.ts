@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url';
 export default defineConfig({
   test: {
     passWithNoTests: true,
-    environment: 'node',
+    environment: 'jsdom',
     include: ['src/**/*.test.{ts,tsx}', 'tests/**/*.test.{ts,tsx}'],
-    setupFiles: [],
+    setupFiles: ['tests/setup.ts'],
   },
   resolve: {
     alias: {
