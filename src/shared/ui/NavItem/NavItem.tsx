@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Icon from '../Icon';
+import Icon from '../Icon/Icon';
 import type { NavItemProps } from './NavItem.types';
 
 /** Stacked icon + label navigation item; link when `href` is given, otherwise a button. */

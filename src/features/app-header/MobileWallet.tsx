@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
-import Icon from '@/shared/ui/Icon';
+import Icon from '@/shared/ui/Icon/Icon';
 
 /** Wallet row shown under the mobile logo. */
 export default function MobileWallet() {

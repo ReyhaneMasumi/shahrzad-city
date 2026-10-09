@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowLeft } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
-import Icon from '@/shared/ui/Icon';
+import Icon from '@/shared/ui/Icon/Icon';
 
 /** Desktop wallet shortcut placed at the end of the header row. */
 export default function WalletChip() {

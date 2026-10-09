@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import type { IconsaxIconProps } from '../Icon.types';
+import type { IconsaxIconProps } from '../Icon/Icon.types';
 
 export interface NavItemProps {
   label: string;

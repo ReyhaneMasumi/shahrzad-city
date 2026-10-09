@@ -1,6 +1,6 @@
-import Empty from '../Empty';
-import ErrorState from '../ErrorState';
-import Skeleton from '../Skeleton';
+import Empty from '../Empty/Empty';
+import ErrorState from '../ErrorState/ErrorState';
+import Skeleton from '../Skeleton/Skeleton';
 import type { SectionStatesProps } from './SectionStates.types';
 
 /** Single switch point for a section's loading / error / empty / success states. */

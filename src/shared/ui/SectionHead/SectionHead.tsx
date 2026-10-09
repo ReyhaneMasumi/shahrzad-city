@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ArrowRight2 } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
-import Button from '../Button';
-import Icon from '../Icon';
+import Button from '../Button/Button';
+import Icon from '../Icon/Icon';
 import type { SectionHeadProps } from './SectionHead.types';
 
 /**

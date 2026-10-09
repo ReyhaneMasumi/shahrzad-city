@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowDown2 } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
-import Icon from '@/shared/ui/Icon';
+import Icon from '@/shared/ui/Icon/Icon';
 
 const LINKS = [
   { key: 'services', ...fa.header.services, chevron: true },

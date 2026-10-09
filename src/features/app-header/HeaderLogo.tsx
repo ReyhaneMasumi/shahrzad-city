@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { fa } from '@/shared/i18n/fa';
-import Image from '@/shared/ui/Image';
+import Image from '@/shared/ui/Image/Image';
 
 /** Brand logo linking back to the home route. */
 export default function HeaderLogo() {

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Notification, Scan, User } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
-import Icon from '@/shared/ui/Icon';
+import Icon from '@/shared/ui/Icon/Icon';
 import HeaderLogo from './HeaderLogo';
 
 /** Mobile top row: profile, centered logo, notifications and QR. */

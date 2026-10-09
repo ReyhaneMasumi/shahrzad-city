@@ -1,6 +1,6 @@
 import { Notification } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
-import Icon from '@/shared/ui/Icon';
+import Icon from '@/shared/ui/Icon/Icon';
 import { useMediaQuery } from '@/shared/hooks';
 import type { AppHeaderProps } from './AppHeader.types';
 import DesktopNav from './DesktopNav';

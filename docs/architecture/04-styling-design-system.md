@@ -67,9 +67,18 @@ Layer order (verify against the Ant Design + Tailwind docs): `@layer theme, base
 - Headings use real `h1-h6` in order. One `h1` per page. Visual size is independent from semantic level.
 - Type styles are Tailwind `@utility` classes (`text-heading-lg`) or component classes. Never hard-code `font-size` in components.
 
+## Component decision rule (mandatory)
+**Never re-develop what Ant Design already ships.** Before creating any UI component (primitive or composite), follow this order:
+
+1. **Check Ant Design first** (`antd` MCP / `llms.txt`) for a component that covers the requirement.
+2. **If it exists in Ant Design:** write a small wrapper in `src/shared/ui` that re-exports/extends the Ant Design component — set theme-driven defaults and antd's own props up front, fix RTL, and expose only the props our app needs. Do not re-implement behavior or styling from scratch.
+3. **Only if no Ant Design component matches:** build the component from scratch with Tailwind following the class strategy below, matched to the reference.
+
+Exceptions need a written reason (for example a bespoke visual that cannot be themed via `ConfigProvider` without `!important` fighting).
+
 ## Ant Design v6 usage
 - Use the App Router registry package for SSR style extraction (check the "Usage with Next.js" page).
-- Prefer Ant Design for complex widgets (Drawer, Modal, Dropdown, Skeleton, Result, Empty). Build simple visuals (tiles, banners, nav items) as our own primitives so they match the reference pixel-for-pixel.
+- Follow the component decision rule above: antd covers the widget → wrap it; antd does not cover it → build with Tailwind. Simple reference-matched visuals (tiles, banners, nav items) are still ours when antd has no fit.
 - Theme through `ConfigProvider theme={{ token: {...} }}` mapped from our tokens. Do not fight Ant Design with `!important`.
 - Static `message/notification/Modal` methods: use `App.useApp()`.
 - Check the v5→v6 migration page for renamed or removed props. Treat console deprecation warnings as bugs.

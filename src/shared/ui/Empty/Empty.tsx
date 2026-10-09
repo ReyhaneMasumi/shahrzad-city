@@ -1,7 +1,7 @@
 import { Empty as AntdEmpty } from 'antd';
 import { FolderOpen } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
-import Icon from './Icon';
+import Icon from '../Icon/Icon';
 import type { EmptyProps } from './Empty.types';
 
 /** Neutral empty state built on Ant Design `Empty`: icon, title, message, action. */

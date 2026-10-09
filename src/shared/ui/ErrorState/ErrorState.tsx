@@ -1,6 +1,6 @@
 import { Result } from 'antd';
 import { fa } from '@/shared/i18n/fa';
-import Button from './Button';
+import Button from '../Button/Button';
 import type { ErrorStateProps } from './ErrorState.types';
 
 /** Error state built on Ant Design `Result`: message plus an optional retry action. */

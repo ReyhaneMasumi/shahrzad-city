@@ -1,8 +1,8 @@
 import { ArrowLeft2, ArrowRight2 } from 'iconsax-react';
 import type { KeyboardEvent } from 'react';
 import { fa } from '@/shared/i18n/fa';
-import Button from '../Button';
-import Icon from '../Icon';
+import Button from '../Button/Button';
+import Icon from '../Icon/Icon';
 import type { CarouselProps } from './Carousel.types';
 import { useCarousel } from './useCarousel';
 
