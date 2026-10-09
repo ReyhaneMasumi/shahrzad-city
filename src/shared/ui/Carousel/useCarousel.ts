@@ -57,13 +57,14 @@ export function useCarousel({ count, initialIndex = 0 }: UseCarouselParams): Use
   const goTo = useCallback(
     (index: number) => {
       const target = clamp(index, count);
+      if (target === activeIndex) return;
       setActiveIndex(target);
       slideRefs.current[target]?.scrollIntoView({
         behavior: reducedMotion ? 'auto' : 'smooth',
         inline: 'start',
       });
     },
-    [count, reducedMotion]
+    [activeIndex, count, reducedMotion]
   );
 
   const next = useCallback(() => goTo(activeIndex + 1), [goTo, activeIndex]);

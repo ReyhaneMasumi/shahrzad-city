@@ -83,6 +83,50 @@ describe('Carousel', () => {
     );
   });
 
+  it('navigates with ArrowLeft and ArrowRight on the region', () => {
+    renderCarousel();
+    scrollIntoView.mockClear();
+
+    const region = screen.getByRole('group', { name: 'Banners' });
+    expect(region).toHaveAttribute('tabindex', '0');
+    const firstBullet = screen.getByRole('button', { name: fa.carousel.goToSlide(1) });
+    const secondBullet = screen.getByRole('button', { name: fa.carousel.goToSlide(2) });
+
+    // RTL: ArrowLeft advances, and acting prevents the default.
+    expect(fireEvent.keyDown(region, { key: 'ArrowLeft' })).toBe(false);
+    expect(secondBullet).toHaveAttribute('aria-current', 'true');
+    expect(firstBullet).not.toHaveAttribute('aria-current');
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+
+    // ArrowRight recedes.
+    expect(fireEvent.keyDown(region, { key: 'ArrowRight' })).toBe(false);
+    expect(firstBullet).toHaveAttribute('aria-current', 'true');
+
+    // No-op at the start: no scroll, no state change, default untouched.
+    expect(fireEvent.keyDown(region, { key: 'ArrowRight' })).toBe(true);
+    expect(firstBullet).toHaveAttribute('aria-current', 'true');
+    expect(scrollIntoView).toHaveBeenCalledTimes(2);
+
+    // Unhandled keys are never intercepted.
+    expect(fireEvent.keyDown(region, { key: 'Enter' })).toBe(true);
+    expect(scrollIntoView).toHaveBeenCalledTimes(2);
+  });
+
+  it('is a no-op past the end for ArrowLeft and for the disabled next button', () => {
+    renderCarousel({ initialIndex: 1 });
+    scrollIntoView.mockClear();
+
+    const region = screen.getByRole('group', { name: 'Banners' });
+    expect(fireEvent.keyDown(region, { key: 'ArrowLeft' })).toBe(true);
+    fireEvent.click(screen.getByRole('button', { name: fa.carousel.nextSlide }));
+
+    expect(scrollIntoView).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: fa.carousel.goToSlide(2) })).toHaveAttribute(
+      'aria-current',
+      'true'
+    );
+  });
+
   it('tracks the visible slide with an IntersectionObserver and disconnects on unmount', () => {
     const { unmount } = renderCarousel();
     const observer = MockIntersectionObserver.last();
