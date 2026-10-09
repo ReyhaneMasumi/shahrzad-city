@@ -96,3 +96,15 @@ Format:
 - Options: in-browser MSW from `API.md` fixtures + slim standalone mock service in compose (default); official mock backend started by the owner.
 - Decision: default to MSW + standalone mock service; base URL from `NEXT_PUBLIC_API_BASE_URL` (default `/api`).
 - Consequences: swapping the real mock is a one-line env change; documented in README.
+
+## D-018 Mock backend runs in-process via MSW, dev and production
+- Date: 2026-10-08
+- Status: accepted
+- Context: the owner chose MSW as the mock backend and requires it to be active at application runtime in
+  both development and production builds.
+- Options: separate mock-api container in compose (extra moving part, breaks SSR); MSW only in dev builds
+  (production would have no data).
+- Decision: MSW serves the mock in-process always — browser `setupWorker` on the client plus `msw/node`
+  started from `instrumentation.ts` on the server (SSR, build-time prerender, standalone production).
+- Consequences: single self-contained image; `API.md` paths work unchanged; verify `instrumentation.ts`
+  runs during `next build` prerender before relying on it (see PLAN P5 risk).

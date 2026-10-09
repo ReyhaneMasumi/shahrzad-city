@@ -1,6 +1,6 @@
 # PLAN — Shahrzad Homepage Rebuild (Step C)
 
-> Status: proposed — awaiting project owner approval.
+> Status: **accepted 2026-10-08** — plan approved by the project owner; mock backend decision recorded (D-018).
 > Structure and tooling decisions are ratified in `docs/PLAN-structure.md` (Step B).
 > Reference facts come from `docs/audit/STEP-A-FINDINGS.md` and `docs/audit/visual-findings.md`.
 
@@ -98,8 +98,11 @@ Legend — **goal / tasks / files / skills / verify / commit / risks.**
   timeout 10s, response interceptor → `ApiError`, GET retry backoff); typed env parsing in
   `src/shared/config/env.ts`; DTO + domain types from `API.md`; endpoint functions + SWR key factories
   for `main-page/apps-nested` and `banners`; mappers DTO → domain; SWR hooks returning typed view-models;
-  global `SWRConfig` (deduping, bounded retry, focus policy); MSW handlers served from structured fixtures;
-  server fetch + `SWRConfig.fallback` hydration pattern (architecture §05).
+  global `SWRConfig` (deduping, bounded retry, focus policy); MSW handlers served from structured
+  fixtures and registered **wherever the app runs**: `msw/node` started in the Next.js server via
+  `instrumentation.ts` (covers SSR + build-time prerender) and the browser `setupWorker` for the client —
+  so dev and production both serve the mock in-process (D-018), no separate mock service;
+  server fetch for first paint + `SWRConfig.fallback` hydration pattern (architecture §05).
 - **Files:** `src/shared/api/**`, `src/shared/config/env.ts`, `src/features/{hero-banner,home-sections}/api|types|lib|hooks`,
   `tests/fixtures/*.json`, `tests/mocks/*`.
 - **Skills:** `add-api-endpoint`, `add-swr-hook`, `add-zustand-store` (only if a store is justified).
@@ -189,16 +192,17 @@ Legend — **goal / tasks / files / skills / verify / commit / risks.**
 - **Risks:** third-party remote images (optimizer load); if a budget is missed, document why.
 
 ### P13 — Docker
-- **Goal:** reproducible image, no secrets, compose with the mock backend.
+- **Goal:** reproducible image, no secrets, runnable anywhere (mock backend runs in-process via MSW).
 - **Tasks:** multi-stage `Dockerfile` (base deps builder runner, non-root, `output: standalone`, healthcheck);
-  `.dockerignore`; `.env.example`; `docker-compose.yml` with `web` + `mock-api` sharing a network,
-  health dependency, env passed at runtime (no image secrets); document mock backend start (open question §4).
+  `.dockerignore`; `.env.example`; `docker-compose.yml` with a single `web` service (no separate mock
+  container — D-018: `instrumentation.ts` starts `msw/node` inside the app), env passed at runtime
+  (no image secrets).
 - **Files:** `Dockerfile`, `.dockerignore`, `docker-compose.yml`, `.env.example`.
 - **Skills:** `docker-verify`.
-- **Verify:** `docker build` clean; `docker-verify`; compose up + homepage responds.
-- **Commit:** `build(docker): standalone image and compose with mock api`
+- **Verify:** `docker build` clean; `docker-verify`; compose up + homepage responds with mock data.
+- **Commit:** `build(docker): standalone image with in-process msw mock`
 - **Risks:** offline npm mirror in the image build (use `--offline`-sensitive lockfile), `NEXT_PUBLIC_*`
-  build-time inlining.
+  build-time inlining, MSW `instrumentation` running during `next build` prerender.
 
 ### P14 — README + decision log + AI usage
 - **Goal:** submission-grade documentation.
@@ -214,9 +218,12 @@ Legend — **goal / tasks / files / skills / verify / commit / risks.**
 
 ## 4. Risks and open questions
 
-- **Mock backend location (open):** the provided mock backend is not in this repository. Default plan:
-  in-browser MSW with fixtures from `API.md` plus a slim standalone mock server service in compose, base
-  URL from env. **Ask the owner: where/how is the official mock backend started?**
+- **Mock backend (resolved, D-018):** MSW serves the mock **in-process at all times** — browser
+  `setupWorker` on the client and `msw/node` started from `instrumentation.ts` on the server (covers
+  SSR, `next build` prerender and the standalone production server; also dev). No separate service,
+  no env gating — per the owner's requirement that the mock runs in dev and production.
+- **MSW during `next build` prerender:** `instrumentation.ts` must also activate for build-time
+  prerender workers; verified in P2/P5 before Cache Components are locked in.
 - **Cache Components / Partial Prefetching in Next 16.4:** behavior verified during P2 against installed docs; tests may relax if defaults differ.
 - **TypeScript 7.0.2 on the registry:** TS pin follows the `create-next-app` scaffold; upgrade consciously later.
 - **Iconsax availability:** icon set is v0.0.8, unmaintained; missing glyphs get the closest Iconsax variant in the `Icon` primitive.
