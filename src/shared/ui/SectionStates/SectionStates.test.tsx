@@ -56,7 +56,7 @@ describe('SectionStates', () => {
     expect(screen.queryByText('content')).not.toBeInTheDocument();
   });
 
-  it('falls back to a single Skeleton when no skeleton is provided', () => {
+  it('falls back to an antd Skeleton when no skeleton is provided', () => {
     render(
       <SectionStates status="loading">
         <span>content</span>
@@ -64,8 +64,7 @@ describe('SectionStates', () => {
     );
 
     const skeletons = within(findStateRoot('loading')).getAllByRole('generic', { hidden: true });
-    expect(skeletons).toHaveLength(1);
-    expect(skeletons[0]).toHaveClass('bg-surface-muted');
+    expect(skeletons.some((element) => element.className.includes('ant-skeleton'))).toBe(true);
   });
 
   it('renders ErrorState with a retry action only when onRetry is given', () => {

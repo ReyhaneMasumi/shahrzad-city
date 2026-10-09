@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Icon from '../Icon';
 import type { NavItemProps } from './NavItem.types';
 
@@ -29,14 +30,14 @@ export default function NavItem({
 
   if (href !== undefined) {
     return (
-      <a
+      <Link
         href={href}
         aria-current={active ? 'page' : undefined}
         data-state={state}
         className={classes}
       >
         {content}
-      </a>
+      </Link>
     );
   }
 

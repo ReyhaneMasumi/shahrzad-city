@@ -55,8 +55,9 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
           ))}
         </ul>
         <Button
-          variant="secondary"
-          size="sm"
+          color="primary"
+          variant="outlined"
+          size="small"
           aria-label={fa.carousel.previousSlide}
           disabled={isAtStart}
           onClick={prev}
@@ -65,8 +66,9 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
           <Icon icon={ArrowLeft2} size={20} className="rtl:-scale-x-100" />
         </Button>
         <Button
-          variant="secondary"
-          size="sm"
+          color="primary"
+          variant="outlined"
+          size="small"
           aria-label={fa.carousel.nextSlide}
           disabled={isAtEnd}
           onClick={next}

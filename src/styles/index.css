@@ -11,6 +11,5 @@
 @import './base.css';
 @import './typography.css';
 @import './antd-bridge.css';
-@import './components/button.css';
 @import './components/app-header.css';
 @import './components/hero-banner.css';

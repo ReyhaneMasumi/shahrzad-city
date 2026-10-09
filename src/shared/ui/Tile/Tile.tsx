@@ -1,9 +1,11 @@
+import Link from 'next/link';
 import Icon from '../Icon';
 import type { TileProps } from './Tile.types';
 
 /**
  * Icon tile: 64px muted circle plus a 12px label. Renders a link when `href`
- * is given, otherwise a button; `external` links open in a new tab.
+ * is given (external links keep a native anchor and open in a new tab),
+ * otherwise a button.
  */
 export default function Tile({
   title,
@@ -36,15 +38,17 @@ export default function Tile({
   );
 
   if (href !== undefined) {
+    if (external === true) {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+          {content}
+        </a>
+      );
+    }
     return (
-      <a
-        href={href}
-        target={external === true ? '_blank' : undefined}
-        rel={external === true ? 'noopener noreferrer' : undefined}
-        className={classes}
-      >
+      <Link href={href} className={classes}>
         {content}
-      </a>
+      </Link>
     );
   }
 

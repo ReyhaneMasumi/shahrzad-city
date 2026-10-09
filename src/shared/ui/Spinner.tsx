@@ -1,17 +1,9 @@
-import { useReducedMotion } from '@/shared/hooks';
+import { Spin } from 'antd';
 import { fa } from '@/shared/i18n/fa';
 import type { SpinnerProps } from './Spinner.types';
 
-/** Accessible spinner; rotation stops under `prefers-reduced-motion`. */
+/** Accessible loading spinner built on Ant Design `Spin`. Rotation stops under `prefers-reduced-motion` (global rule in base.css). */
 export default function Spinner({ className }: SpinnerProps) {
-  const reducedMotion = useReducedMotion();
-  const ringClasses = [
-    'size-5 rounded-full border-2 border-current border-e-transparent',
-    reducedMotion ? '' : 'animate-spin',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   return (
     <span
       role="status"
@@ -19,7 +11,7 @@ export default function Spinner({ className }: SpinnerProps) {
         .filter(Boolean)
         .join(' ')}
     >
-      <span aria-hidden className={ringClasses} />
+      <Spin size="small" />
       <span className="sr-only">{fa.loading}</span>
     </span>
   );

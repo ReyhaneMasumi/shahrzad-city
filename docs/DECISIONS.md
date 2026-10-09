@@ -161,3 +161,19 @@ Format:
   (client-side re-render) — acceptable because this is an interactive shell, and it keeps a single header
   structure in the DOM instead of two duplicate trees. The tablet (768) shell stays mobile until/unless the
   reference is re-measured; changing the split is a single `lg`/`64rem` constant.
+
+## D-022 Ant Design is the base of shared/ui primitives
+- Date: 2026-10-09
+- Status: accepted
+- Context: the early `shared/ui` primitives were hand-rolled Tailwind, so the required Ant Design base was only
+  configured (registry + `ConfigProvider`) but never exercised. Two definitions of the same brand values (CSS
+  `@theme` vs `ConfigProvider` tokens) could drift silently.
+- Decision: `Button`, `Empty`, `ErrorState` (`Result`), `Spinner` (`Spin`) and `Skeleton` (`Skeleton.Node`) now
+  wrap Ant Design v6 primitives and keep their previous public props and a11y roles (`status`/`alert`). Tailwind
+  stays for geometry/layout; antd owns component skins. Brand colors/radius/control heights are defined once in
+  `src/shared/design/palette.ts`, consumed by `ConfigProvider`, and mirrored in `tokens.css` guarded by
+  `palette.test.ts`.
+- Consequences: sections built from `shared/ui` get antd look-and-feel and its keyboard/focus behavior. The
+  custom `.btn` CSS is deleted. `Icon`/`Image`/`Container`/`Carousel` stay bespoke: icons are Iconsax-specific,
+  images use `next/image`, and the carousel was already decided custom in D-013. Any remaining visual deltas vs
+  the audited reference must be tuned via antd theme tokens, not bespoke CSS.

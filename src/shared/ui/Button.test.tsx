@@ -13,20 +13,24 @@ describe('Button', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  it('exposes variant and size through data attributes', () => {
+  it('applies antd type and size classes', () => {
     render(
-      <Button variant="ghost" size="lg">
+      <Button type="primary" size="small">
         Action
       </Button>
     );
 
     const button = screen.getByRole('button', { name: 'Action' });
-    expect(button).toHaveAttribute('data-variant', 'ghost');
-    expect(button).toHaveAttribute('data-size', 'lg');
-    expect(button).toHaveAttribute('data-state', 'idle');
+    expect(button).toHaveClass('ant-btn-primary', 'ant-btn-sm');
   });
 
-  it('disables the button and sets aria-busy while loading', () => {
+  it('renders an anchor when href is given', () => {
+    render(<Button href="/wallet">Go</Button>);
+
+    expect(screen.getByRole('link', { name: 'Go' })).toHaveAttribute('href', '/wallet');
+  });
+
+  it('blocks clicks while loading', () => {
     const onClick = vi.fn();
     render(
       <Button loading onClick={onClick}>
@@ -34,10 +38,8 @@ describe('Button', () => {
       </Button>
     );
 
-    const button = screen.getByRole('button', { name: 'Action' });
-    expect(button).toBeDisabled();
-    expect(button).toHaveAttribute('aria-busy', 'true');
-    expect(button).toHaveAttribute('data-state', 'loading');
+    const button = screen.getByRole('button', { name: /Action/ });
+    expect(button).toHaveClass('ant-btn-loading');
 
     fireEvent.click(button);
     expect(onClick).not.toHaveBeenCalled();
