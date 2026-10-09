@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import AntdRegistry from '@/providers/antd-registry';
 import Providers from '@/providers';
+import { AppShell } from '@/features/app-shell';
 import { fa } from '@/shared/i18n/fa';
 import { iransans } from './fonts';
 import '@/styles/index.css';
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="fa" dir="rtl" className={iransans.variable}>
       <body>
         <AntdRegistry>
-          <Providers>{children}</Providers>
+          <Providers>
+            <AppShell>{children}</AppShell>
+          </Providers>
         </AntdRegistry>
       </body>
     </html>

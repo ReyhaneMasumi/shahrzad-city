@@ -5,7 +5,7 @@ import { fa } from '@/shared/i18n/fa';
 
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (
-    <main className="flex min-h-dvh items-center justify-center">
+    <div className="flex min-h-dvh items-center justify-center">
       <Result
         status="error"
         title={fa.error.title}
@@ -16,6 +16,6 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
           </Button>
         }
       />
-    </main>
+    </div>
   );
 }

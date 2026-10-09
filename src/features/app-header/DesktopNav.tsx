@@ -1,0 +1,30 @@
+import { ArrowDown2 } from 'iconsax-react';
+import { fa } from '@/shared/i18n/fa';
+import Icon from '@/shared/ui/Icon';
+
+const LINKS = [
+  { key: 'services', ...fa.header.services, chevron: true },
+  { key: 'faq', ...fa.header.faq, chevron: false },
+  { key: 'about', ...fa.header.about, chevron: false },
+] as const;
+
+/** Primary desktop navigation. */
+export default function DesktopNav() {
+  return (
+    <nav aria-label={fa.header.navLabel}>
+      <ul className="flex items-center gap-lg text-body-md text-content-inverse">
+        {LINKS.map((link) => (
+          <li key={link.key}>
+            <a
+              href={link.href}
+              className="inline-flex items-center gap-2xs motion-safe:transition-opacity motion-safe:hover:opacity-80"
+            >
+              {link.label}
+              {link.chevron ? <Icon icon={ArrowDown2} size={16} /> : null}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}

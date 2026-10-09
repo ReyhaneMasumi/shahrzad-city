@@ -1,3 +1,35 @@
 @layer components {
-  /* app-header component styles */
+  /*
+   * Mobile: 200px brand layer behind the content, shrinks 80px once scrolled.
+   * Desktop (>= 64rem = Tailwind `lg`): static 136px bar whose SVG carries the
+   * rounded bottom corners; the scroll region overlaps it via a negative margin.
+   */
+  .app-header {
+    background-color: var(--color-primary-brand);
+    background-image: url('/brand/background-header-mobile.svg');
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: transform var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  .app-header[data-scrolled] {
+    transform: translateY(-80px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .app-header[data-scrolled] {
+      transform: none;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .app-header,
+    .app-header[data-scrolled] {
+      background-color: transparent;
+      background-image: url('/brand/background-header-desktop.svg');
+      background-size: 100% 100%;
+      transform: none;
+    }
+  }
 }

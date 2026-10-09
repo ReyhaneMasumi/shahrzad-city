@@ -23,6 +23,22 @@ export const fa = {
   common: {
     seeAll: 'مشاهده همه',
   },
+  header: {
+    logoAlt: 'شهرزاد',
+    navLabel: 'ناوبری اصلی',
+    services: { label: 'خدمات شهرزاد', href: '/shahrzad-services' },
+    faq: { label: 'سوالات متداول', href: '/faq' },
+    about: { label: 'درباره شهرزاد', href: '/about-shahrzad' },
+    wallet: {
+      title: 'کیف پول',
+      view: 'مشاهده',
+      viewBalance: 'مشاهده موجودی',
+      href: '/wallet',
+    },
+    qr: { label: 'پرداخت با کد QR', href: '/qr-payment' },
+    profile: { label: 'حساب کاربری' },
+    notifications: { label: 'اعلان‌ها' },
+  },
   carousel: {
     region: 'اسلایدها',
     previousSlide: 'اسلاید قبلی',
