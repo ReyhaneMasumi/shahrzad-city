@@ -66,4 +66,8 @@ export const fa = {
   heroBanner: {
     ariaLabel: 'بنرهای اصلی',
   },
+  homeSections: {
+    loading: 'در حال بارگذاری خدمات...',
+    empty: 'خدمتی برای نمایش وجود ندارد',
+  },
 } as const;

@@ -11,13 +11,12 @@ export function useHomeSections(): HomeSectionsViewModel {
     fetcher
   );
 
-  const status = error
-    ? 'error'
-    : isLoading
-      ? 'loading'
-      : !data || (data.main.length === 0 && data.services.length === 0)
-        ? 'empty'
-        : 'success';
+  const hasTiles = data?.services.some((s) => s.tiles.length > 0) ?? false;
+  const hasMain = (data?.main.length ?? 0) > 0;
+  const hasWallet = (data?.wallet.length ?? 0) > 0;
+  const isEmpty = !hasTiles && !hasMain && !hasWallet;
+
+  const status = error ? 'error' : isLoading ? 'loading' : isEmpty ? 'empty' : 'success';
 
   return {
     status,
