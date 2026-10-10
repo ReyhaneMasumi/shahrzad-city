@@ -12,7 +12,7 @@ const LINKS = [
 /** Primary desktop navigation. */
 export default function DesktopNav() {
   return (
-    <nav aria-label="main navigation">
+    <nav aria-label={fa.header.navLabel}>
       <ul className="flex items-center gap-xl text-body-md font-medium text-white">
         {LINKS.map((link) => (
           <li key={link.key}>

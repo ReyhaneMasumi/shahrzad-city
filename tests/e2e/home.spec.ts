@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { fa } from '@/shared/i18n/fa';
 
 test.describe('Home page', () => {
   test.beforeEach(async ({ page }) => {
@@ -18,13 +19,13 @@ test.describe('Home page', () => {
   test('should have proper landmarks', async ({ page }) => {
     await expect(page.getByRole('banner')).toBeVisible();
     await expect(page.getByRole('main')).toBeVisible();
-    await expect(page.getByRole('navigation', { name: 'main navigation' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: fa.header.navLabel })).toBeVisible();
     await expect(page.getByRole('navigation', { name: 'footer links' })).toBeVisible();
   });
 
   test('should have bottom navigation on mobile', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'Bottom navigation only on mobile');
-    await expect(page.getByRole('navigation', { name: 'bottom navigation' })).toBeVisible({
+    await expect(page.getByRole('navigation', { name: fa.bottomNav.navLabel })).toBeVisible({
       timeout: 5000,
     });
   });
