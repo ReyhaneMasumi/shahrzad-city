@@ -4,7 +4,7 @@ import { fa } from '@/shared/i18n/fa';
 
 export default function OfflinePage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
+    <div className="page-center-lg">
       <svg
         className="h-16 w-16 text-neutral-400"
         fill="none"
@@ -21,10 +21,7 @@ export default function OfflinePage() {
       </svg>
       <h1 className="text-xl font-semibold text-neutral-900">{fa.offline.title}</h1>
       <p className="text-neutral-600 max-w-md">{fa.offline.message}</p>
-      <button
-        onClick={() => window.location.reload()}
-        className="mt-4 rounded-lg bg-primary-600 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-      >
+      <button onClick={() => window.location.reload()} className="btn-primary-action">
         {fa.offline.retry}
       </button>
     </div>

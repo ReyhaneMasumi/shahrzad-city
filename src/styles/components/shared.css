@@ -1,0 +1,156 @@
+@layer components {
+  .page-center {
+    @apply flex min-h-dvh flex-col items-center justify-center gap-4 p-4 text-center;
+  }
+
+  .page-center-lg {
+    @apply flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center;
+  }
+
+  .btn-primary-action {
+    @apply mt-4 rounded-lg bg-primary-600 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .back-to-top-btn {
+    @apply h-11 w-full rounded-12 border border-stroke-neutral bg-white font-medium;
+  }
+
+  .bottom-nav {
+    @apply fixed inset-x-0 bottom-0 z-[var(--z-index-bottom-nav)] h-[92px] bg-white pb-[env(safe-area-inset-bottom)] lg:hidden;
+  }
+
+  .bottom-nav-inner {
+    @apply relative mx-auto flex h-[48px] max-w-[360px] items-center justify-between rounded-full bg-white px-md shadow-bottom-sheet;
+  }
+
+  .bottom-nav-item {
+    @apply flex h-full items-center gap-2xs text-content-primary;
+  }
+
+  .bottom-nav-item-text {
+    @apply text-body-sm font-medium;
+  }
+
+  .bottom-nav-qr {
+    @apply absolute left-1/2 top-1/2 flex size-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-12 bg-[var(--color-primary-10)];
+  }
+
+  .carousel-root {
+    @apply relative flex flex-col gap-sm;
+  }
+
+  .carousel-wrapper {
+    @apply relative m-lg overflow-hidden rounded-12 bg-white;
+  }
+
+  .carousel-inner {
+    @apply relative overflow-hidden rounded-12;
+  }
+
+  .carousel-track {
+    @apply flex snap-x snap-mandatory overflow-x-auto;
+  }
+
+  .carousel-slide {
+    @apply w-full shrink-0 snap-start;
+  }
+
+  .carousel-arrow {
+    @apply absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-surface;
+  }
+
+  .carousel-dots-wrap {
+    @apply flex items-center justify-center;
+  }
+
+  .carousel-dot-btn {
+    @apply flex min-h-11 min-w-11 items-center justify-center;
+  }
+
+  .carousel-dot {
+    @apply block h-2.5 w-2.5 rounded-full bg-content-tertiary;
+  }
+
+  .carousel-dot[data-active] {
+    @apply w-5 bg-primary-brand;
+  }
+
+  .empty-wrap {
+    @apply p-xl;
+  }
+
+  .section-head-wrap {
+    @apply flex flex-col gap-xs;
+  }
+
+  .section-head-row {
+    @apply flex items-center justify-between gap-sm;
+  }
+
+  .section-head-title {
+    @apply shrink-0 text-heading-sm font-bold text-content-primary;
+  }
+
+  .section-head-divider {
+    @apply h-px w-full bg-stroke-neutral;
+  }
+
+  .section-head-action {
+    @apply inline-flex min-h-11 shrink-0 items-center gap-2xs text-body-sm font-medium text-primary-brand-hover;
+  }
+
+  .container-fluid {
+    @apply mx-auto w-full max-w-7xl ps-sm pe-sm md:ps-md md:pe-md;
+  }
+
+  .spinner-root {
+    @apply inline-flex items-center justify-center text-primary-brand;
+  }
+
+  .nav-item {
+    @apply flex min-h-11 min-w-11 flex-col items-center justify-center gap-2xs text-caption text-content-secondary;
+  }
+
+  .nav-item[data-state='active'] {
+    @apply font-medium text-primary-brand-hover;
+  }
+
+  .tile-root {
+    @apply flex min-h-11 min-w-11 flex-col items-center gap-xs text-center text-content-primary;
+  }
+
+  .tile-badge {
+    @apply rounded-full bg-surface-muted px-1.5 py-0.5 text-caption text-content-secondary;
+  }
+
+  .tile-icon-wrap {
+    @apply flex size-16 items-center justify-center rounded-full bg-surface-muted;
+  }
+
+  .shell-root {
+    @apply relative flex h-dvh flex-col overflow-hidden bg-surface;
+  }
+
+  .shell-viewport {
+    @apply pointer-events-none relative min-h-0 flex-1 lg:-mt-12;
+  }
+
+  .shell-main {
+    @apply pointer-events-auto absolute inset-x-4 bottom-0 top-[150px] overflow-y-auto overscroll-contain rounded-b-2xl bg-surface pb-[92px] transition-all duration-300 lg:static lg:mx-auto lg:h-full lg:w-full lg:max-w-[900px] lg:rounded-none lg:pb-0;
+  }
+
+  .shell-main[data-scrolled] {
+    top: 100px;
+  }
+
+  @media (min-width: 64rem) {
+    .shell-main,
+    .shell-main[data-scrolled] {
+      top: 0;
+    }
+  }
+
+  .shell-main-top-sentinel {
+    @apply block h-px w-full;
+  }
+}

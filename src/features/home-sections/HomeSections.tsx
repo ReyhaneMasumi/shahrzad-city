@@ -12,13 +12,7 @@ export default function HomeSections(_props: HomeSectionsProps) {
   const { status, data, retry } = useHomeSections();
 
   const skeletonGrid = Array.from({ length: SKELETON_COUNT }, (_, i) => (
-    <Skeleton
-      key={i}
-      className="flex flex-col items-center gap-2xs"
-      rounded
-      width="76px"
-      height="86px"
-    />
+    <Skeleton key={i} className="home-sections-skeleton-grid" rounded width="76px" height="86px" />
   ));
 
   if (status === 'loading') {
@@ -29,11 +23,7 @@ export default function HomeSections(_props: HomeSectionsProps) {
           href={fa.header.services.href}
           actionLabel={fa.common.seeAll}
         />
-        <div
-          className="grid grid-cols-4 gap-y-10"
-          role="list"
-          aria-label={fa.header.services.label}
-        >
+        <div className="home-sections-grid" role="list" aria-label={fa.header.services.label}>
           {skeletonGrid}
         </div>
       </SectionStates>
@@ -73,7 +63,7 @@ export default function HomeSections(_props: HomeSectionsProps) {
         actionLabel={fa.common.seeAll}
       />
       <div
-        className="grid grid-cols-4 gap-y-10 lg:pb-[360px]"
+        className="home-sections-grid lg:pb-[360px]"
         role="list"
         aria-label={fa.header.services.label}
       >

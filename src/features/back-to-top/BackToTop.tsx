@@ -10,7 +10,7 @@ export default function BackToTop({ onClick }: BackToTopProps) {
         type="default"
         size="small"
         onClick={onClick}
-        className="w-full h-11 rounded-[var(--radius-12)] font-medium border border-stroke-neutral bg-white"
+        className="back-to-top-btn"
         aria-label={fa.backToTop}
       >
         <Icon icon={ArrowUp2} size={20} className="ms-2 rtl:-scale-x-100" />

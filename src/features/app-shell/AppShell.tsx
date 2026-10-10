@@ -19,19 +19,20 @@ export default function AppShell({ children }: AppShellProps) {
   const { scrolled, nearBottom, scrollToTop } = useShellScroll(scrollRef);
 
   return (
-    <div className="relative flex h-dvh flex-col overflow-hidden bg-surface">
+    <div className="shell-root">
       <AppHeader scrolled={scrolled} />
 
-      <div className="pointer-events-none relative min-h-0 flex-1 lg:-mt-12">
+      <div className="shell-viewport">
         <main
           ref={scrollRef}
           data-testid="shell-scroll"
-          className={`pointer-events-auto absolute inset-x-4 lg:top-[120px] transition-all duration-300 ${scrolled ? 'top-[100px]' : 'top-[150px]'} bottom-0 overflow-y-auto overscroll-contain rounded-b-2xl bg-surface pb-[92px] lg:static lg:mx-auto lg:h-full lg:w-full lg:max-w-[900px] lg:rounded-none lg:pb-0 lg:top-0`}
+          data-scrolled={scrolled ? 'true' : undefined}
+          className="shell-main"
         >
-          <div aria-hidden data-sentinel="top" className="block h-px w-full" />
+          <div aria-hidden data-sentinel="top" className="shell-main-top-sentinel" />
           {children}
           <BackToTop onClick={scrollToTop} />
-          <div aria-hidden data-sentinel="bottom" className="block h-px w-full" />
+          <div aria-hidden data-sentinel="bottom" className="shell-main-top-sentinel" />
         </main>
       </div>
 

@@ -11,13 +11,7 @@ export default function NavItem({
   onClick,
   className,
 }: NavItemProps) {
-  const classes = [
-    'flex min-h-11 min-w-11 flex-col items-center justify-center gap-2xs text-caption',
-    active ? 'font-medium text-primary-brand-hover' : 'text-content-secondary',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const classes = ['nav-item', className].filter(Boolean).join(' ');
 
   const content = (
     <>

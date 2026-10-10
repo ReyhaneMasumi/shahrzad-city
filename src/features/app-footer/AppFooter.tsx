@@ -10,36 +10,30 @@ export default function AppFooter({ revealed }: AppFooterProps) {
   return (
     <footer
       data-revealed={revealed ? 'true' : undefined}
-      className="hidden lg:block fixed inset-x-0 bottom-0 z-[var(--z-index-footer)] h-[278px] translate-y-[300px] opacity-0 transition-[transform,opacity] duration-[200ms,100ms] data-[revealed]:translate-y-0 data-[revealed]:opacity-100"
+      className="app-footer"
       style={{
         transitionDuration: reducedMotion ? '0ms' : '200ms, 100ms',
       }}
     >
-      <div className="relative h-[165px] w-full">
+      <div className="app-footer-image-wrap">
         <Image
           src="/brand/footer-picture.svg"
           alt={fa.footer.brandAlt}
           width={609}
           height={165}
-          className="mx-auto h-full w-auto"
+          className="app-footer-image"
           unoptimized
         />
       </div>
-      <nav
-        className="h-[113px] bg-primary-brand flex items-center justify-center gap-lg text-white"
-        role="navigation"
-        aria-label="footer links"
-      >
+      <nav className="app-footer-nav" role="navigation" aria-label="footer links">
         {fa.footer.links.map((link) => (
-          <span key={link.href} className="text-body-xs font-medium">
+          <span key={link.href} className="app-footer-link">
             {link.external ? (
-              <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-white">
+              <a href={link.href} target="_blank" rel="noopener noreferrer">
                 {link.label}
               </a>
             ) : (
-              <Link href={link.href} className="text-white">
-                {link.label}
-              </Link>
+              <Link href={link.href}>{link.label}</Link>
             )}
           </span>
         ))}

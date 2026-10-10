@@ -7,13 +7,13 @@ import type { MobileTopRowProps } from './MobileTopRow.types';
 /** Wallet row shown under the mobile logo. */
 export default function MobileWallet({ scrolled }: MobileTopRowProps) {
   return (
-    <div className={`px-sm transition-all duration-300 ${scrolled ? 'translate-y-[-70px] ' : ''}`}>
+    <div className={`app-header-mobile-wallet-row ${scrolled ? 'translate-y-[-70px]' : ''}`}>
       <Link
         href={fa.header.wallet.href}
-        className={`mx-auto flex h-12  transition-all duration-300 ${scrolled ? 'w-[240px] md:w-[360px]' : 'w-[360]'} items-center justify-between rounded-[var(--radius-12)] bg-white/20 px-sm text-content-inverse backdrop-blur-sm`}
+        className={`app-header-mobile-wallet-link ${scrolled ? 'w-[240px] md:w-[360px]' : ''}`}
       >
         <span className="text-body-md font-medium">{fa.header.wallet.title}</span>
-        <span className="flex items-center gap-2xs text-body-sm">
+        <span className="app-header-mobile-wallet-balance">
           {fa.header.wallet.viewBalance}
           <Icon icon={ArrowLeft} size={20} />
         </span>

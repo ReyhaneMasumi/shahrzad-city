@@ -20,30 +20,22 @@ export default function SectionHead({
   const Heading = headingLevel === 3 ? 'h3' : 'h2';
 
   return (
-    <div className="flex flex-col gap-xs">
-      <div className="flex items-center justify-between gap-sm">
+    <div className="section-head-wrap">
+      <div className="section-head-row">
         <Heading className="text-heading-md text-content-primary">{title}</Heading>
         {href !== undefined ? (
-          <Link
-            href={href}
-            className="inline-flex min-h-11 items-center gap-2xs text-body-sm font-medium text-primary-brand-hover"
-          >
+          <Link href={href} className="section-head-action">
             {actionLabel}
             <Icon icon={ArrowRight2} size={16} className="rtl:-scale-x-100" />
           </Link>
         ) : onAction !== undefined ? (
-          <Button
-            variant="text"
-            size="small"
-            onClick={onAction}
-            className="text-body-sm font-medium text-primary-brand-hover"
-          >
+          <Button variant="text" size="small" onClick={onAction} className="section-head-action">
             {actionLabel}
             <Icon icon={ArrowRight2} size={16} className="rtl:-scale-x-100" />
           </Button>
         ) : null}
       </div>
-      <span aria-hidden="true" className="h-px w-full bg-stroke-neutral" />
+      <span aria-hidden="true" className="section-head-divider" />
     </div>
   );
 }

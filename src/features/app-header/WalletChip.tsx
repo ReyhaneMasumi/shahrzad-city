@@ -6,10 +6,7 @@ import Icon from '@/shared/ui/Icon/Icon';
 /** Desktop wallet shortcut placed at the end of the header row. */
 export default function WalletChip() {
   return (
-    <Link
-      href={fa.header.wallet.href}
-      className="flex items-center gap-2xs px-sm py-2xs rounded-[var(--radius-12)] bg-white/20 text-white font-medium text-body-sm backdrop-blur-sm motion-safe:transition-all motion-safe:hover:bg-white/30"
-    >
+    <Link href={fa.header.wallet.href} className="wallet-chip">
       <span>{fa.header.wallet.title}</span>
       <span className="flex items-center gap-2xs">
         {fa.header.wallet.view}

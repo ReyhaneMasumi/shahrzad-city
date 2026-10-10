@@ -1,15 +1,4 @@
-/*
- * Base element styles. Component visuals live in @layer components.
- * Physical-direction properties are intentionally absent: the layout is RTL-first
- * and uses logical utilities only.
- */
 @layer base {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
   html {
     font-family: var(--font-sans);
     -webkit-text-size-adjust: 100%;

@@ -23,6 +23,6 @@ describe('BottomNav', () => {
   it('qr button has accessible name and correct style class', () => {
     render(<BottomNav />);
     const qrLink = screen.getByRole('link', { name: fa.bottomNav.qr });
-    expect(qrLink).toHaveClass('bg-[var(--color-primary-10)]');
+    expect(qrLink).toHaveClass('bottom-nav-qr');
   });
 });

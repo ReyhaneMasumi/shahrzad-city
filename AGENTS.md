@@ -84,6 +84,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Tokens live in `@theme` (one source of truth, imported from `src/styles/tokens.css`).
 - Avoid unreadable or heavily repeated utility strings. Prefer design-system primitives and semantic reusable classes for repeated patterns, but keep local Tailwind utilities for genuinely local layout/styling. Do not extract CSS merely because a className contains many utilities. Variants should use semantic props/data attributes where appropriate.
+- **Max 3 tokens per `className`** (static tokens + the widest branch of each `${...}`). More than 3 means a semantic class belongs in `src/styles/components/*.css` via `@apply`, with state expressed through `data-*` attributes. Enforced by `scripts/check-class-count.mjs` in `pnpm lint`.
 - RTL first: logical utilities (`ms-*`, `me-*`, `ps-*`, `pe-*`, `start-*`, `end-*`, `text-start`). Never `ml-*`, `mr-*`, `left-*`, `right-*`, `text-left`. Mirror directional icons with `rtl:-scale-x-100`.
 - Mobile first: base styles are mobile; add `md:`/`lg:` upwards.
 - Animate only `transform` and `opacity`. Respect `prefers-reduced-motion`.

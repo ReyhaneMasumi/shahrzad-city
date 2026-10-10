@@ -1,8 +1,3 @@
-/*
- * Typography: base body defaults plus static @utility classes for the type scale.
- * Sizes come from tokens.css (fluid clamp); Persian body line-height is generous
- * and letter-spacing stays at zero (never negative for Persian).
- */
 @layer base {
   body {
     font-size: var(--type-body-md-size);

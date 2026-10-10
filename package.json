@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "preview": "pnpm build && pnpm start",
-    "lint": "eslint && node scripts/check-no-persian.mjs",
+    "lint": "eslint && node scripts/check-no-persian.mjs && node scripts/check-class-count.mjs",
     "format": "prettier --no-error-on-unmatched-pattern --write \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\" \"tests/**/*.{ts,tsx}\" \"eslint.config.mjs\" \"next.config.ts\" \"prettier.config.mjs\" \"vitest.config.ts\" \"package.json\"",
     "format:check": "prettier --no-error-on-unmatched-pattern --check \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\" \"tests/**/*.{ts,tsx}\" \"eslint.config.mjs\" \"next.config.ts\" \"prettier.config.mjs\" \"vitest.config.ts\" \"package.json\"",
     "typecheck": "tsc --noEmit",

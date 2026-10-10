@@ -1,27 +1,29 @@
-/*
- * Design tokens for the Shahrzad homepage.
- * Values are ported from the reference audit (Design.md, css-variables.css).
- * This @theme block is the single source of truth; components use these tokens.
- */
 @theme {
-  /* Fonts: bind the self-hosted IRANSans loader variable to the Tailwind sans token. */
   --font-sans: var(--font-iransans), system-ui, sans-serif;
 
-  /* Brand and content colors */
   --color-primary-brand: #307fe2;
   --color-primary-brand-hover: #1c66c1;
   --color-primary-10: #eaf2fc;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+
   --color-content-primary: #1c1c1c;
   --color-content-secondary: #4b4b4b;
   --color-content-tertiary: #7e7e7e;
   --color-content-inverse: #ffffff;
+
   --color-surface: #ffffff;
   --color-surface-muted: #f7f7f7;
   --color-stroke-neutral: #f7f7f7;
+
   --color-critical: #d9151c;
   --color-approve: #00af5a;
 
-  /* Spacing scale (reference: 8/12/16/24/28/40/48/64/112px) */
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-600: #525252;
+  --color-neutral-900: #171717;
+
   --spacing-2xs: 0.5rem;
   --spacing-xs: 0.75rem;
   --spacing-sm: 1rem;
@@ -32,42 +34,38 @@
   --spacing-3xl: 4rem;
   --spacing-4xl: 7rem;
 
-  /* Radii (reference: 0/12/30/40/50px) */
   --radius-0: 0px;
+  --radius-8: 0.5rem;
   --radius-12: 0.75rem;
+  --radius-16: 1rem;
   --radius-30: 1.875rem;
   --radius-40: 2.5rem;
   --radius-50: 3.125rem;
 
-  /* Elevation */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.04);
   --shadow-bottom-sheet: 0 0 12px 0 rgb(0 0 0 / 0.1), 0 0 4px 0 rgb(0 0 0 / 0.04);
 
-  /* Stacking order (audit: footer 1000, bottom nav 2000) */
   --z-index-header: 100;
   --z-index-footer: 1000;
   --z-index-bottom-nav: 2000;
   --z-index-overlay: 3000;
   --z-index-toast: 4000;
 
-  /* Motion */
   --motion-duration-fast: 120ms;
   --motion-duration-base: 200ms;
   --motion-duration-slow: 320ms;
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-ease-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Breakpoints (audit checkpoints: 360/390/768/1024/1440px) */
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 90rem;
   --breakpoint-2xl: 96rem;
 
-  /* Fluid type scale between 360px and 1440px (clamp: min, slope, max) */
   --type-caption-size: 0.75rem;
   --type-body-sm-size: clamp(0.75rem, 0.708rem + 0.185vw, 0.875rem);
   --type-body-md-size: clamp(0.875rem, 0.833rem + 0.185vw, 1rem);
@@ -77,7 +75,6 @@
   --type-heading-lg-size: clamp(1.375rem, 1.208rem + 0.741vw, 1.875rem);
   --type-display-size: clamp(1.75rem, 1.5rem + 1.111vw, 2.5rem);
 
-  /* Line heights: generous for Persian body text, tighter for display. */
   --leading-body: 1.7;
   --leading-heading: 1.4;
   --leading-display: 1.25;

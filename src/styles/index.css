@@ -1,15 +1,12 @@
-/*
- * Single global stylesheet, imported once in src/app/layout.tsx.
- * The layer order is declared before the Tailwind import: Tailwind's own
- * statement omits `antd`, and a later statement would append it above
- * `utilities`, giving Ant Design priority over our utilities.
- */
+/* Layer order declared before the Tailwind import so Ant Design (antd) stays below utilities. */
 @layer theme, base, antd, components, utilities;
 
 @import 'tailwindcss';
 @import './tokens.css';
 @import './base.css';
 @import './typography.css';
-@import './antd-bridge.css';
 @import './components/app-header.css';
 @import './components/hero-banner.css';
+@import './components/app-footer.css';
+@import './components/home-sections.css';
+@import './components/shared.css';

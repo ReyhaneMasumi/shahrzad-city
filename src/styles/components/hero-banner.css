@@ -1,3 +1,13 @@
 @layer components {
-  /* hero-banner component styles */
+  .hero-banner-link {
+    @apply relative block w-full;
+  }
+
+  .hero-banner-skeleton {
+    @apply absolute inset-0 h-full w-full rounded-12;
+  }
+
+  .hero-banner-image {
+    @apply rounded-12 object-cover;
+  }
 }

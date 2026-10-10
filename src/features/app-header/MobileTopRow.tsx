@@ -7,16 +7,8 @@ import type { MobileTopRowProps } from './MobileTopRow.types';
 
 export default function MobileTopRow({ scrolled }: MobileTopRowProps) {
   return (
-    <div
-      className={`relative flex h-[84px] items-center justify-between px-sm transition-all duration-300 ${
-        scrolled ? 'h-[64px] pb-0' : ''
-      }`}
-    >
-      <div
-        className={`pointer-events-none absolute inset-x-0 top-0 flex items-center justify-center transition-all duration-300 ${
-          scrolled ? 'h-0 opacity-0' : 'h-[84px] opacity-100'
-        }`}
-      >
+    <div className={`app-header-mobile-row ${scrolled ? 'h-[64px] pb-0' : ''}`}>
+      <div className={`app-header-mobile-logo-wrapper ${scrolled ? 'h-0 opacity-0' : ''}`}>
         <span className="pointer-events-auto">
           <HeaderLogo />
         </span>
@@ -24,30 +16,22 @@ export default function MobileTopRow({ scrolled }: MobileTopRowProps) {
       <button
         type="button"
         aria-label={fa.header.profile.label}
-        className="grid size-11 place-items-center text-content-inverse"
+        className="app-header-mobile-icon-button"
       >
         <Icon icon={User} size={24} />
       </button>
-      <div
-        className={`flex items-center gap-2xs transition-all duration-300 ${
-          scrolled ? '-translate-x-5' : ''
-        }`}
-      >
+      <div className={`app-header-mobile-actions ${scrolled ? '-translate-x-5' : ''}`}>
         <button
           type="button"
           aria-label={fa.header.notifications.label}
-          className={`grid size-11 place-items-center text-content-inverse transition-all duration-300 ${
-            scrolled ? '-translate-x-5' : ''
-          }`}
+          className={`app-header-mobile-icon-button ${scrolled ? '-translate-x-5' : ''}`}
         >
           <Icon icon={Notification} size={24} />
         </button>
         <Link
           href={fa.header.qr.href}
           aria-label={fa.header.qr.label}
-          className={`grid size-11 place-items-center text-content-inverse transition-all duration-300 ${
-            scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
+          className={`app-header-mobile-icon-button ${scrolled ? 'opacity-0 pointer-events-none' : ''}`}
         >
           <Icon icon={Scan} size={24} />
         </Link>

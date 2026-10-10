@@ -14,7 +14,7 @@ export default function HeroBanner(_props: HeroBannerProps) {
   if (status === 'loading') {
     return (
       <div className="relative w-full" style={{ aspectRatio: MOBILE_ASPECT }}>
-        <Skeleton className="absolute inset-0 w-full h-full rounded-[var(--radius-8)]" />
+        <Skeleton className="hero-banner-skeleton" />
       </div>
     );
   }
@@ -31,18 +31,14 @@ export default function HeroBanner(_props: HeroBannerProps) {
     const banner = data[0];
     if (!banner) return <Empty message={fa.empty.heroBanner} />;
     return (
-      <Link
-        href={banner.url}
-        className="relative w-full block"
-        style={{ aspectRatio: MOBILE_ASPECT }}
-      >
+      <Link href={banner.url} className="hero-banner-link" style={{ aspectRatio: MOBILE_ASPECT }}>
         <Image
           src={banner.image}
           alt={banner.name}
           fill
           priority
           sizes="(max-width: 1023px) 100vw, 900px"
-          className="rounded-[var(--radius-8)] object-cover"
+          className="hero-banner-image"
         />
       </Link>
     );
@@ -55,7 +51,7 @@ export default function HeroBanner(_props: HeroBannerProps) {
         <Link
           key={banner.id}
           href={banner.url}
-          className="relative w-full block"
+          className="hero-banner-link"
           style={{ aspectRatio: MOBILE_ASPECT }}
         >
           <Image
@@ -63,7 +59,7 @@ export default function HeroBanner(_props: HeroBannerProps) {
             alt={banner.name}
             fill
             sizes="(max-width: 1023px) 100vw, 900px"
-            className="rounded-[var(--radius-8)] object-cover"
+            className="hero-banner-image"
           />
         </Link>
       ))}

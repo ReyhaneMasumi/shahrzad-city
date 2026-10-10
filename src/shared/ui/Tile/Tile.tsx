@@ -16,24 +16,15 @@ export default function Tile({
   badge,
   className,
 }: TileProps) {
-  const classes = [
-    'flex min-h-11 min-w-11 flex-col items-center gap-xs text-center text-content-primary',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const classes = ['tile-root', className].filter(Boolean).join(' ');
 
   const content = (
     <>
-      <span className="flex size-16 items-center justify-center rounded-full bg-surface-muted">
+      <span className="tile-icon-wrap">
         <Icon icon={icon} />
       </span>
       <span className="text-caption">{title}</span>
-      {badge === undefined ? null : (
-        <span className="rounded-full bg-surface-muted px-1.5 py-0.5 text-caption text-content-secondary">
-          {badge}
-        </span>
-      )}
+      {badge === undefined ? null : <span className="tile-badge">{badge}</span>}
     </>
   );
 

@@ -1,0 +1,29 @@
+@layer components {
+  .home-tile-row {
+    @apply flex w-full flex-row items-center justify-start gap-2xs text-center;
+  }
+
+  .home-tile-icon-wrap {
+    @apply relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-12 bg-surface-muted;
+  }
+
+  .home-tile-image {
+    @apply object-cover transition-[opacity,filter] duration-200 hover:opacity-70;
+  }
+
+  .home-tile-title {
+    @apply line-clamp-1 text-caption font-medium text-content-primary;
+  }
+
+  .home-tile-link {
+    @apply flex flex-col items-center justify-start gap-2xs;
+  }
+
+  .home-sections-skeleton-grid {
+    @apply flex flex-col items-center gap-2xs;
+  }
+
+  .home-sections-grid {
+    @apply grid grid-cols-4 gap-y-10 lg:pb-[360px];
+  }
+}

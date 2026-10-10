@@ -16,8 +16,6 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
     initialIndex,
   });
 
-  const arrowClasses = 'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-surface';
-
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     if (event.key === 'ArrowLeft' && !isAtEnd) {
       event.preventDefault();
@@ -35,11 +33,11 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
       aria-label={ariaLabel}
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className={['relative flex flex-col gap-sm', className].filter(Boolean).join(' ')}
+      className={['carousel-root', className].filter(Boolean).join(' ')}
     >
-      <div className="relative background-white rounded-12 overflow-hidden m-lg">
-        <div className="relative rounded-12 overflow-hidden">
-          <ul ref={trackRef} className="flex snap-x snap-mandatory overflow-x-auto">
+      <div className="carousel-wrapper">
+        <div className="carousel-inner">
+          <ul ref={trackRef} className="carousel-track">
             {items.map((item, index) => (
               <li
                 key={index}
@@ -49,7 +47,7 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
                 role="group"
                 aria-roledescription="slide"
                 aria-label={fa.carousel.slideLabel(index + 1, items.length)}
-                className="w-full shrink-0 snap-start"
+                className="carousel-slide"
               >
                 {item}
               </li>
@@ -62,7 +60,7 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
             aria-label={fa.carousel.previousSlide}
             disabled={isAtStart}
             onClick={prev}
-            className={`start-0 ${arrowClasses}`}
+            className="start-0 carousel-arrow"
           >
             <Icon icon={ArrowLeft2} size={20} className="rtl:-scale-x-100" />
           </Button>
@@ -73,14 +71,14 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
             aria-label={fa.carousel.nextSlide}
             disabled={isAtEnd}
             onClick={next}
-            className={`end-0 ${arrowClasses}`}
+            className="end-0 carousel-arrow"
           >
             <Icon icon={ArrowRight2} size={20} className="rtl:-scale-x-100" />
           </Button>
         </div>
       </div>
 
-      <ul className="flex items-center justify-center">
+      <ul className="carousel-dots-wrap">
         {items.map((_, index) => (
           <li key={index}>
             <button
@@ -88,14 +86,12 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
               aria-label={fa.carousel.goToSlide(index + 1)}
               aria-current={index === activeIndex ? 'true' : undefined}
               onClick={() => goTo(index)}
-              className="flex min-h-11 min-w-11 items-center justify-center"
+              className="carousel-dot-btn"
             >
               <span
                 aria-hidden="true"
-                className={[
-                  'block h-2.5 rounded-full',
-                  index === activeIndex ? 'w-5 bg-primary-brand' : 'w-2.5 bg-content-tertiary',
-                ].join(' ')}
+                data-active={index === activeIndex ? 'true' : undefined}
+                className="carousel-dot"
               />
             </button>
           </li>

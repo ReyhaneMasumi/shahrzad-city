@@ -193,3 +193,20 @@ Format:
 - Consequences: MSW stays only in tests (unchanged). The service worker never sees API traffic, so offline is
   represented by SWR's normal error state, not stale mock data. Real-backend migration later is just pointing
   `NEXT_PUBLIC_API_BASE_URL` at it or adding a `proxy.ts` rewrite over these routes.
+
+## D-024 Semantic component classes and a hard 3-token className rule
+- Date: 2026-10-11
+- Status: accepted
+- Context: feature components accumulated long `className` strings (up to 14 utilities) mixing layout,
+  brand color, motion and state. Several were silently broken: `text-body-xs` (no such utility),
+  `rounded-[var(--radius-8)]` (token deleted, so no radius), `background-white` (invalid property) and
+  `w-[360]` (emits the invalid `width:360`). Reviewers could not see which utilities actually applied.
+- Decision: every element uses at most 3 className tokens (static tokens plus the widest branch of each
+  `${...}`). Anything longer becomes a semantic class in `src/styles/components/*.css` via `@apply`, with
+  interactive/scroll state expressed through `data-*` attributes (`data-scrolled`, `data-revealed`,
+  `data-state`, `data-active`) instead of conditional utility soup. Antd + Tailwind share one `@layer`
+  declaration (in `index.css`; the duplicate `antd-bridge.css` is deleted). `scripts/check-class-count.mjs`
+  enforces the rule in `pnpm lint`, counting template-literal branches by their widest alternative.
+- Consequences: components read as `className="app-header"`, and Tailwind's utility layer still overrides the
+  component layer for the few conditional utilities that remain (e.g. `h-[64px]`). The rule is mechanical, so
+  it cannot rot; adding a genuinely new pattern means adding a component class, not a longer string.

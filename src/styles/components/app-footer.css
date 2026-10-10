@@ -1,0 +1,21 @@
+@layer components {
+  .app-footer {
+    @apply fixed inset-x-0 bottom-0 z-[var(--z-index-footer)] hidden h-[278px] translate-y-[300px] opacity-0 transition-[transform,opacity] duration-[200ms,100ms] lg:block data-[revealed]:translate-y-0 data-[revealed]:opacity-100;
+  }
+
+  .app-footer-image-wrap {
+    @apply relative h-[165px] w-full;
+  }
+
+  .app-footer-image {
+    @apply mx-auto h-full w-auto;
+  }
+
+  .app-footer-nav {
+    @apply flex h-[113px] items-center justify-center gap-lg bg-primary-brand text-white;
+  }
+
+  .app-footer-link {
+    @apply text-caption font-medium text-white;
+  }
+}

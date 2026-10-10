@@ -52,6 +52,7 @@ function failBanners() {
 
 describe('useHeroBanners', () => {
   it('resolves to success with the single served banner', async () => {
+    serveBanners([banner]);
     const { result } = renderHook(() => useHeroBanners(), { wrapper: SwrTestWrapper });
     expect(result.current.status).toBe('loading');
     await waitFor(() => expect(result.current.status).toBe('success'));

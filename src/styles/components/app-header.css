@@ -1,35 +1,73 @@
 @layer components {
-  /*
-   * Mobile: 200px brand layer behind the content, shrinks 80px once scrolled.
-   * Desktop (>= 64rem = Tailwind `lg`): static 136px bar whose SVG carries the
-   * rounded bottom corners; the scroll region overlaps it via a negative margin.
-   */
   .app-header {
-    background-color: var(--color-primary-brand);
+    @apply absolute inset-x-0 top-0 h-[240px] rounded-b-2xl bg-primary-brand transition-all duration-300 lg:static lg:h-[136px] lg:rounded-b-none;
     background-image: url('/brand/background-header-mobile.svg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    transition: transform var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .app-header[data-scrolled] {
-    /* transform: translateY(-80px); */
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .app-header[data-scrolled] {
-      transform: none;
-    }
+    height: 150px;
   }
 
   @media (min-width: 64rem) {
     .app-header,
     .app-header[data-scrolled] {
-      background-color: transparent;
+      height: 136px;
       background-image: url('/brand/background-header-desktop.svg');
-      /* background-size: 100% 100%; */
-      transform: none;
     }
+  }
+
+  .app-header-inner-desktop {
+    @apply mx-auto flex h-full max-w-[1200px] items-center justify-between;
+  }
+
+  .app-header-row {
+    @apply flex items-center gap-xl;
+  }
+
+  .app-header-profile-button {
+    @apply grid size-11 place-items-center rounded-12 border border-white/20 bg-white/10 text-white;
+  }
+
+  .app-header-mobile-row {
+    @apply relative flex h-[84px] items-center justify-between px-sm transition-all duration-300;
+  }
+
+  .app-header-mobile-logo-wrapper {
+    @apply pointer-events-none absolute inset-x-0 top-0 flex h-[84px] items-center justify-center opacity-100 transition-all duration-300;
+  }
+
+  .app-header-mobile-icon-button {
+    @apply grid size-11 place-items-center text-content-inverse;
+  }
+
+  .app-header-mobile-actions {
+    @apply flex items-center gap-2xs transition-all duration-300;
+  }
+
+  .app-header-mobile-wallet-row {
+    @apply px-sm transition-all duration-300;
+  }
+
+  .app-header-mobile-wallet-link {
+    @apply mx-auto flex h-12 items-center justify-between rounded-12 bg-white/20 px-sm text-content-inverse backdrop-blur-sm transition-all duration-300;
+  }
+
+  .app-header-mobile-wallet-balance {
+    @apply flex items-center gap-2xs;
+  }
+
+  .wallet-chip {
+    @apply flex items-center gap-2xs rounded-[var(--radius-12)] bg-white/20 px-sm py-2xs text-body-sm font-medium text-white backdrop-blur-sm transition-all motion-safe:hover:bg-white/30;
+  }
+
+  .nav-desktop {
+    @apply flex items-center gap-xl text-body-md font-medium text-white;
+  }
+
+  .nav-desktop-link {
+    @apply inline-flex items-center gap-2xs text-white transition-opacity motion-safe:hover:opacity-80;
   }
 }
