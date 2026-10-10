@@ -5,6 +5,8 @@ import tseslint from 'typescript-eslint';
 import vitest from '@vitest/eslint-plugin';
 import testingLibrary from 'eslint-plugin-testing-library';
 import playwright from 'eslint-plugin-playwright';
+import importPlugin from 'eslint-plugin-import';
+import reactPlugin from 'eslint-plugin-react';
 import prettier from 'eslint-config-prettier';
 
 const eslintConfig = defineConfig([
@@ -33,15 +35,26 @@ const eslintConfig = defineConfig([
   },
 
   {
+    name: 'project/plugins',
+    files: ['**/*.{js,mjs,cjs,ts,tsx,mts,cts}'],
+    plugins: {
+      import: importPlugin,
+      react: reactPlugin,
+    },
+    rules: {
+      'import/no-cycle': 'error',
+      'react/no-multi-comp': ['error', { ignoreStateless: false }],
+      'react/jsx-no-useless-fragment': 'error',
+    },
+  },
+
+  {
     name: 'project/recommended',
     files: ['**/*.{js,mjs,cjs,ts,tsx,mts,cts}'],
     rules: {
       'no-console': ['error', { allow: ['warn', 'error'] }],
       eqeqeq: ['error', 'always', { null: 'ignore' }],
       'prefer-const': 'error',
-      'import/no-cycle': 'error',
-      'react/no-multi-comp': ['error', { ignoreStateless: false }],
-      'react/jsx-no-useless-fragment': 'error',
       'max-lines': ['warn', 200],
       complexity: ['warn', 10],
       'no-restricted-imports': [
