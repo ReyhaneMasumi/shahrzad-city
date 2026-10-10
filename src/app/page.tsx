@@ -5,9 +5,7 @@ export default function Home() {
   return (
     <>
       <HeroBanner />
-      <main className="px-md py-lg">
-        <HomeSections />
-      </main>
+      <HomeSections />
     </>
   );
 }

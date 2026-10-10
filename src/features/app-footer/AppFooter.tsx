@@ -28,7 +28,7 @@ export default function AppFooter({ revealed }: AppFooterProps) {
       <nav
         className="h-[113px] bg-primary-brand flex items-center justify-center gap-lg text-white"
         role="navigation"
-        aria-label={fa.footer.links[0].label}
+        aria-label="footer links"
       >
         {fa.footer.links.map((link, index) => (
           <span key={link.href} className="text-body-xs font-medium">
