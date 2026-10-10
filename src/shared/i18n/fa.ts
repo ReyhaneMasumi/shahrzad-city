@@ -9,6 +9,7 @@ export const fa = {
   empty: {
     title: 'موردی برای نمایش نیست',
     message: 'هنوز اطلاعاتی در این بخش ثبت نشده است.',
+    heroBanner: 'بنری برای نمایش وجود ندارد',
   },
   error: {
     title: 'خطایی رخ داد',
@@ -62,4 +63,7 @@ export const fa = {
     qr: 'پرداخت',
   },
   backToTop: 'بازگشت به بالا',
+  heroBanner: {
+    ariaLabel: 'بنرهای اصلی',
+  },
 } as const;
