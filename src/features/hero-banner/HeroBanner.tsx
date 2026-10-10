@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { fa } from '@/shared/i18n/fa';
 import { useHeroBanners } from './hooks/useHeroBanners';

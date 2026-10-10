@@ -1,3 +1,5 @@
+'use client';
+
 import { fa } from '@/shared/i18n/fa';
 import { useHomeSections } from './hooks/useHomeSections';
 import { Empty, SectionHead, SectionStates, Skeleton } from '@/shared/ui';
