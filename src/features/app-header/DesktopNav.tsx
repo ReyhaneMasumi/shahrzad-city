@@ -18,7 +18,7 @@ export default function DesktopNav() {
           <li key={link.key}>
             <Link
               href={link.href}
-              className="inline-flex items-center gap-2xs motion-safe:transition-opacity motion-safe:hover:opacity-80"
+              className="inline-flex items-center gap-2xs text-white motion-safe:transition-opacity motion-safe:hover:opacity-80"
             >
               {link.label}
               {link.chevron ? <Icon icon={ArrowDown2} size={16} /> : null}

@@ -7,14 +7,14 @@
   .app-header {
     background-color: var(--color-primary-brand);
     background-image: url('/brand/background-header-mobile.svg');
-    background-position: center top;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     transition: transform var(--motion-duration-base) var(--motion-ease-standard);
   }
 
   .app-header[data-scrolled] {
-    transform: translateY(-80px);
+    /* transform: translateY(-80px); */
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -28,7 +28,7 @@
     .app-header[data-scrolled] {
       background-color: transparent;
       background-image: url('/brand/background-header-desktop.svg');
-      background-size: 100% 100%;
+      /* background-size: 100% 100%; */
       transform: none;
     }
   }

@@ -22,13 +22,16 @@ export default function AppHeader({ scrolled }: AppHeaderProps) {
   return (
     <header
       data-scrolled={scrolled ? 'true' : undefined}
-      className="app-header absolute inset-x-0 top-0 h-[200px] rounded-b-2xl bg-primary-brand lg:static lg:h-[136px] lg:rounded-b-none"
+      className={`app-header absolute inset-x-0 top-0 rounded-b-2xl bg-primary-brand lg:static lg:h-[136px] lg:rounded-b-none transition-all duration-300 ${scrolled ? 'h-37.5' : 'h-60'}`}
     >
       {isDesktop ? (
         <div className="h-[74px] px-md mt-4">
           <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between">
-            <HeaderLogo />
-            <DesktopNav />
+            <div className="flex items-center gap-xl">
+              <HeaderLogo />
+              <DesktopNav />
+            </div>
+
             <div className="flex items-center gap-xl">
               <WalletChip />
               <button
@@ -44,7 +47,7 @@ export default function AppHeader({ scrolled }: AppHeaderProps) {
       ) : (
         <div className="flex h-full flex-col">
           <MobileTopRow scrolled={scrolled} />
-          <MobileWallet />
+          <MobileWallet scrolled={scrolled} />
         </div>
       )}
     </header>

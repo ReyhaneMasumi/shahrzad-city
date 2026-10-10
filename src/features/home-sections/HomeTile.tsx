@@ -9,8 +9,8 @@ import type { HomeTileProps } from './HomeTile.types';
  */
 export default function HomeTile({ title, imageUrl, href, external }: HomeTileProps) {
   const content = (
-    <div className="flex flex-col items-center gap-2xs text-center">
-      <div className="relative flex size-16 shrink-0 items-center justify-center rounded-[var(--radius-16)] bg-neutral-3 overflow-hidden">
+    <div className="w-full flex flex-row justify-start items-center gap-2xs text-center">
+      <div className="relative flex size-16 shrink-0 items-center justify-center rounded-12 bg-gray-100 overflow-hidden">
         <Image
           src={imageUrl}
           alt={title}
@@ -31,7 +31,7 @@ export default function HomeTile({ title, imageUrl, href, external }: HomeTilePr
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col items-center gap-2xs"
+          className="flex flex-col justify-start items-center gap-2xs"
           aria-label={title}
         >
           {content}
@@ -39,14 +39,22 @@ export default function HomeTile({ title, imageUrl, href, external }: HomeTilePr
       );
     }
     return (
-      <Link href={href} className="flex flex-col items-center gap-2xs" aria-label={title}>
+      <Link
+        href={href}
+        className="flex flex-col justify-start items-center gap-2xs"
+        aria-label={title}
+      >
         {content}
       </Link>
     );
   }
 
   return (
-    <button type="button" className="flex flex-col items-center gap-2xs" aria-label={title}>
+    <button
+      type="button"
+      className="flex flex-col justify-start items-center gap-2xs"
+      aria-label={title}
+    >
       {content}
     </button>
   );

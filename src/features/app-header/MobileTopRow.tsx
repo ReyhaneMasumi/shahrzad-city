@@ -9,7 +9,7 @@ export default function MobileTopRow({ scrolled }: MobileTopRowProps) {
   return (
     <div
       className={`relative flex h-[84px] items-center justify-between px-sm transition-all duration-300 ${
-        scrolled ? 'h-[64px] pb-0' : 'pb-5'
+        scrolled ? 'h-[64px] pb-0' : ''
       }`}
     >
       <div
@@ -30,20 +30,24 @@ export default function MobileTopRow({ scrolled }: MobileTopRowProps) {
       </button>
       <div
         className={`flex items-center gap-2xs transition-all duration-300 ${
-          scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          scrolled ? '-translate-x-5' : ''
         }`}
       >
         <button
           type="button"
           aria-label={fa.header.notifications.label}
-          className="grid size-11 place-items-center text-content-inverse"
+          className={`grid size-11 place-items-center text-content-inverse transition-all duration-300 ${
+            scrolled ? '-translate-x-5' : ''
+          }`}
         >
           <Icon icon={Notification} size={24} />
         </button>
         <Link
           href={fa.header.qr.href}
           aria-label={fa.header.qr.label}
-          className="grid size-11 place-items-center text-content-inverse"
+          className={`grid size-11 place-items-center text-content-inverse transition-all duration-300 ${
+            scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
         >
           <Icon icon={Scan} size={24} />
         </Link>

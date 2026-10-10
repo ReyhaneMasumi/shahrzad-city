@@ -30,23 +30,17 @@ export default function AppFooter({ revealed }: AppFooterProps) {
         role="navigation"
         aria-label="footer links"
       >
-        {fa.footer.links.map((link, index) => (
+        {fa.footer.links.map((link) => (
           <span key={link.href} className="text-body-xs font-medium">
             {link.external ? (
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
+              <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-white">
                 {link.label}
               </a>
             ) : (
-              <Link href={link.href} className="hover:underline">
+              <Link href={link.href} className="text-white">
                 {link.label}
               </Link>
             )}
-            {index < fa.footer.links.length - 1 && <span className="mx-md text-white/50">|</span>}
           </span>
         ))}
       </nav>

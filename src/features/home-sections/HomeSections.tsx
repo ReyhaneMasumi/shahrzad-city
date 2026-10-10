@@ -72,7 +72,11 @@ export default function HomeSections(_props: HomeSectionsProps) {
         href={fa.header.services.href}
         actionLabel={fa.common.seeAll}
       />
-      <div className="grid grid-cols-4 gap-y-10" role="list" aria-label={fa.header.services.label}>
+      <div
+        className="grid grid-cols-4 gap-y-10 lg:pb-[360px]"
+        role="list"
+        aria-label={fa.header.services.label}
+      >
         {data.services.flatMap((section) =>
           section.tiles.map((tile) => (
             <HomeTile

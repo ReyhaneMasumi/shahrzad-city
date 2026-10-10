@@ -1,5 +1,18 @@
 [
   {
+    "id": 311,
+    "name": "چشم‌روشنی",
+    "order": 0,
+    "image": "https://static.shahrzadcity.ir/base/banner/W1o5hJAgO1.jpg",
+    "url": "https://web.shahrzadcity.ir/app/newborn",
+    "bannerType": "main_page",
+    "pageChoice": null,
+    "position": "top",
+    "target": "pwa",
+    "linkedTile": null,
+    "authMethod": "refresh"
+  },
+  {
     "id": 49,
     "name": "طرح ترافیک روزانه و ماهانه",
     "order": 3,

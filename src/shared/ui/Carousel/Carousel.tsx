@@ -37,46 +37,49 @@ export default function Carousel({ items, ariaLabel, className, initialIndex = 0
       onKeyDown={handleKeyDown}
       className={['relative flex flex-col gap-sm', className].filter(Boolean).join(' ')}
     >
-      <div className="relative">
-        <ul ref={trackRef} className="flex snap-x snap-mandatory overflow-x-auto">
-          {items.map((item, index) => (
-            <li
-              key={index}
-              ref={(element) => {
-                slideRefs.current[index] = element;
-              }}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={fa.carousel.slideLabel(index + 1, items.length)}
-              className="w-full shrink-0 snap-start"
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-        <Button
-          color="primary"
-          variant="outlined"
-          size="small"
-          aria-label={fa.carousel.previousSlide}
-          disabled={isAtStart}
-          onClick={prev}
-          className={`start-0 ${arrowClasses}`}
-        >
-          <Icon icon={ArrowLeft2} size={20} className="rtl:-scale-x-100" />
-        </Button>
-        <Button
-          color="primary"
-          variant="outlined"
-          size="small"
-          aria-label={fa.carousel.nextSlide}
-          disabled={isAtEnd}
-          onClick={next}
-          className={`end-0 ${arrowClasses}`}
-        >
-          <Icon icon={ArrowRight2} size={20} className="rtl:-scale-x-100" />
-        </Button>
+      <div className="relative background-white rounded-12 overflow-hidden m-lg">
+        <div className="relative rounded-12 overflow-hidden">
+          <ul ref={trackRef} className="flex snap-x snap-mandatory overflow-x-auto">
+            {items.map((item, index) => (
+              <li
+                key={index}
+                ref={(element) => {
+                  slideRefs.current[index] = element;
+                }}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={fa.carousel.slideLabel(index + 1, items.length)}
+                className="w-full shrink-0 snap-start"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+          <Button
+            color="primary"
+            variant="outlined"
+            size="small"
+            aria-label={fa.carousel.previousSlide}
+            disabled={isAtStart}
+            onClick={prev}
+            className={`start-0 ${arrowClasses}`}
+          >
+            <Icon icon={ArrowLeft2} size={20} className="rtl:-scale-x-100" />
+          </Button>
+          <Button
+            color="primary"
+            variant="outlined"
+            size="small"
+            aria-label={fa.carousel.nextSlide}
+            disabled={isAtEnd}
+            onClick={next}
+            className={`end-0 ${arrowClasses}`}
+          >
+            <Icon icon={ArrowRight2} size={20} className="rtl:-scale-x-100" />
+          </Button>
+        </div>
       </div>
+
       <ul className="flex items-center justify-center">
         {items.map((_, index) => (
           <li key={index}>
