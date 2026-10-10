@@ -13,7 +13,7 @@ const LINKS = [
 export default function DesktopNav() {
   return (
     <nav aria-label={fa.header.navLabel}>
-      <ul className="flex items-center gap-lg text-body-md text-content-inverse">
+      <ul className="flex items-center gap-xl text-body-md font-medium text-white">
         {LINKS.map((link) => (
           <li key={link.key}>
             <Link

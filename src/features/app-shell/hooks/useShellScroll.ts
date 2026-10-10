@@ -6,24 +6,28 @@ import { useReducedMotion } from '@/shared/hooks';
  * 120px so the header only shrinks after a deliberate scroll.
  */
 const TOP_ROOT_MARGIN = '120px 0px 0px 0px';
+const FOOTER_HEIGHT = 278; // px - footer height for reveal trigger
 
 export interface ShellScrollState {
   atTop: boolean;
   scrolled: boolean;
   atBottom: boolean;
+  nearBottom: boolean; // when remaining scroll <= footer height
   scrollToTop: () => void;
 }
 
 /**
  * Derives scroll position from two `data-sentinel` markers inside the scroll
  * container `ref`: a top marker (drives `scrolled`/`atTop`) and a bottom marker
- * (drives `atBottom`). Observers are torn down on unmount.
+ * (drives `atBottom`). Also detects `nearBottom` when remaining scroll <= footer height.
+ * Observers are torn down on unmount.
  */
 export function useShellScroll(ref: RefObject<HTMLElement | null>): ShellScrollState {
   const reducedMotion = useReducedMotion();
   const [atTop, setAtTop] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [atBottom, setAtBottom] = useState(false);
+  const [nearBottom, setNearBottom] = useState(false);
 
   useEffect(() => {
     const root = ref.current;
@@ -54,9 +58,21 @@ export function useShellScroll(ref: RefObject<HTMLElement | null>): ShellScrollS
 
     topObserver.observe(topSentinel);
     bottomObserver.observe(bottomSentinel);
+
+    // Check nearBottom on scroll
+    const handleScroll = () => {
+      const root = ref.current;
+      if (!root) return;
+      const { scrollTop, scrollHeight, clientHeight } = root;
+      const remaining = scrollHeight - scrollTop - clientHeight;
+      setNearBottom(remaining <= FOOTER_HEIGHT);
+    };
+    root.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => {
       topObserver.disconnect();
       bottomObserver.disconnect();
+      root.removeEventListener('scroll', handleScroll);
     };
   }, [ref]);
 
@@ -64,5 +80,5 @@ export function useShellScroll(ref: RefObject<HTMLElement | null>): ShellScrollS
     ref.current?.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
   }, [ref, reducedMotion]);
 
-  return { atTop, scrolled, atBottom, scrollToTop };
+  return { atTop, scrolled, atBottom, nearBottom, scrollToTop };
 }

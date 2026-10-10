@@ -14,7 +14,7 @@ export default function HeroBanner(_props: HeroBannerProps) {
   if (status === 'loading') {
     return (
       <div className="relative w-full" style={{ aspectRatio: MOBILE_ASPECT }}>
-        <Skeleton className="absolute inset-0 w-full h-full" rounded />
+        <Skeleton className="absolute inset-0 w-full h-full rounded-[var(--radius-8)]" />
       </div>
     );
   }

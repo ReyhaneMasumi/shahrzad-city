@@ -3,12 +3,20 @@ import { Notification, Scan, User } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
 import Icon from '@/shared/ui/Icon/Icon';
 import HeaderLogo from './HeaderLogo';
+import type { MobileTopRowProps } from './MobileTopRow.types';
 
-/** Mobile top row: profile, centered logo, notifications and QR. */
-export default function MobileTopRow() {
+export default function MobileTopRow({ scrolled }: MobileTopRowProps) {
   return (
-    <div className="relative flex h-[84px] items-center justify-between px-sm pb-5">
-      <div className="pointer-events-none absolute inset-x-0 top-0 bottom-5 flex items-center justify-center">
+    <div
+      className={`relative flex h-[84px] items-center justify-between px-sm transition-all duration-300 ${
+        scrolled ? 'h-[64px] pb-0' : 'pb-5'
+      }`}
+    >
+      <div
+        className={`pointer-events-none absolute inset-x-0 top-0 flex items-center justify-center transition-all duration-300 ${
+          scrolled ? 'h-0 opacity-0' : 'h-[84px] opacity-100'
+        }`}
+      >
         <span className="pointer-events-auto">
           <HeaderLogo />
         </span>
@@ -20,7 +28,11 @@ export default function MobileTopRow() {
       >
         <Icon icon={User} size={24} />
       </button>
-      <div className="flex items-center gap-2xs">
+      <div
+        className={`flex items-center gap-2xs transition-all duration-300 ${
+          scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
+      >
         <button
           type="button"
           aria-label={fa.header.notifications.label}

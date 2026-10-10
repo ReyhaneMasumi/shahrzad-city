@@ -16,7 +16,7 @@ import { useShellScroll } from './hooks/useShellScroll';
  */
 export default function AppShell({ children }: AppShellProps) {
   const scrollRef = useRef<HTMLElement>(null);
-  const { scrolled, atBottom, scrollToTop } = useShellScroll(scrollRef);
+  const { scrolled, nearBottom, scrollToTop } = useShellScroll(scrollRef);
 
   return (
     <div className="relative flex h-dvh flex-col overflow-hidden bg-surface">
@@ -26,7 +26,7 @@ export default function AppShell({ children }: AppShellProps) {
         <main
           ref={scrollRef}
           data-testid="shell-scroll"
-          className="pointer-events-auto absolute inset-x-4 top-[152px] bottom-0 overflow-y-auto overscroll-contain rounded-[var(--radius-40)] bg-surface p-3 pb-[92px] lg:static lg:mx-auto lg:h-full lg:w-full lg:max-w-[900px] lg:rounded-none lg:pb-0"
+          className="pointer-events-auto absolute inset-x-4 top-[120px] bottom-0 overflow-y-auto overscroll-contain rounded-b-2xl bg-surface pb-[92px] lg:static lg:mx-auto lg:h-full lg:w-full lg:max-w-[900px] lg:rounded-none lg:pb-0 lg:top-0"
         >
           <div aria-hidden data-sentinel="top" className="block h-px w-full" />
           {children}
@@ -35,7 +35,7 @@ export default function AppShell({ children }: AppShellProps) {
         </main>
       </div>
 
-      <AppFooter revealed={atBottom} />
+      <AppFooter revealed={nearBottom} />
       <BottomNav />
     </div>
   );

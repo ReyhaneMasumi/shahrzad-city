@@ -1,4 +1,4 @@
-import { Notification } from 'iconsax-react';
+import { User } from 'iconsax-react';
 import { fa } from '@/shared/i18n/fa';
 import Icon from '@/shared/ui/Icon/Icon';
 import { useMediaQuery } from '@/shared/hooks';
@@ -22,10 +22,10 @@ export default function AppHeader({ scrolled }: AppHeaderProps) {
   return (
     <header
       data-scrolled={scrolled ? 'true' : undefined}
-      className="app-header absolute inset-x-0 top-0 h-[200px] rounded-b-2xl lg:static lg:h-[136px] lg:rounded-b-none"
+      className="app-header absolute inset-x-0 top-0 h-[200px] rounded-b-2xl bg-primary-brand lg:static lg:h-[136px] lg:rounded-b-none"
     >
       {isDesktop ? (
-        <div className="h-[74px] px-md">
+        <div className="h-[74px] px-md mt-4">
           <div className="mx-auto flex h-full max-w-[1200px] items-center justify-between">
             <HeaderLogo />
             <DesktopNav />
@@ -33,17 +33,17 @@ export default function AppHeader({ scrolled }: AppHeaderProps) {
               <WalletChip />
               <button
                 type="button"
-                aria-label={fa.header.notifications.label}
-                className="grid size-11 place-items-center rounded-[var(--radius-12)] border border-content-inverse/20 bg-content-inverse/10 text-content-inverse"
+                aria-label={fa.header.profile.label}
+                className="grid size-11 place-items-center rounded-[var(--radius-12)] border border-white/20 bg-white/10 text-white"
               >
-                <Icon icon={Notification} size={24} />
+                <Icon icon={User} size={24} />
               </button>
             </div>
           </div>
         </div>
       ) : (
         <div className="flex h-full flex-col">
-          <MobileTopRow />
+          <MobileTopRow scrolled={scrolled} />
           <MobileWallet />
         </div>
       )}

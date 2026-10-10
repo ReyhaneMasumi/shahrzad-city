@@ -5,15 +5,17 @@ import type { BackToTopProps } from './BackToTop.types';
 
 export default function BackToTop({ onClick }: BackToTopProps) {
   return (
-    <Button
-      type="text"
-      size="small"
-      onClick={onClick}
-      className="lg:hidden w-full h-11 rounded-[var(--radius-12)] font-medium"
-      aria-label={fa.backToTop}
-    >
-      <Icon icon={ArrowUp2} size={20} className="ms-2 rtl:-scale-x-100" />
-      {fa.backToTop}
-    </Button>
+    <div className="lg:hidden mt-lg">
+      <Button
+        type="default"
+        size="small"
+        onClick={onClick}
+        className="w-full h-11 rounded-[var(--radius-12)] font-medium border border-stroke-neutral bg-white"
+        aria-label={fa.backToTop}
+      >
+        <Icon icon={ArrowUp2} size={20} className="ms-2 rtl:-scale-x-100" />
+        {fa.backToTop}
+      </Button>
+    </div>
   );
 }

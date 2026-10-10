@@ -26,7 +26,7 @@ export default function AppFooter({ revealed }: AppFooterProps) {
         />
       </div>
       <nav
-        className="h-[113px] bg-primary-brand flex items-center justify-center gap-xl text-content-inverse"
+        className="h-[113px] bg-primary-brand flex items-center justify-center gap-lg text-white"
         role="navigation"
         aria-label={fa.footer.links[0].label}
       >
@@ -46,7 +46,7 @@ export default function AppFooter({ revealed }: AppFooterProps) {
                 {link.label}
               </Link>
             )}
-            {index < fa.footer.links.length - 1 && <span className="mx-sm">|</span>}
+            {index < fa.footer.links.length - 1 && <span className="mx-md text-white/50">|</span>}
           </span>
         ))}
       </nav>

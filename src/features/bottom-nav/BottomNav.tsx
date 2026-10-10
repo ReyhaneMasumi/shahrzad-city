@@ -8,7 +8,7 @@ export default function BottomNav(_props: BottomNavProps) {
   return (
     <nav
       aria-label={fa.bottomNav.navLabel}
-      className="lg:hidden fixed inset-x-0 bottom-0 z-[var(--z-index-bottom-nav)] h-[92px] pb-[env(safe-area-inset-bottom)]"
+      className="lg:hidden fixed inset-x-0 bottom-0 z-[var(--z-index-bottom-nav)] h-[92px] bg-white pb-[env(safe-area-inset-bottom)]"
       role="navigation"
     >
       <div className="relative mx-auto flex h-[48px] max-w-[360px] items-center justify-between rounded-full bg-white px-md shadow-bottom-sheet">
@@ -24,7 +24,7 @@ export default function BottomNav(_props: BottomNavProps) {
         <Link
           href="/qr-payment"
           aria-label={fa.bottomNav.qr}
-          className="absolute left-1/2 -translate-x-1/2 -translate-y-6 flex size-[70px] items-center justify-center rounded-full bg-[var(--color-primary-10)]"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex size-[52px] items-center justify-center rounded-[var(--radius-12)] bg-[var(--color-primary-10)]"
         >
           <Icon icon={Scan} size={32} className="text-primary-brand" />
         </Link>
