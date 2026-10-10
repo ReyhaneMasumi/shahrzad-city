@@ -1,10 +1,6 @@
-import type { Metadata } from 'next';
-import { fa } from '@/shared/i18n/fa';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Offline - Shahrzad',
-  description: 'You are currently offline',
-};
+import { fa } from '@/shared/i18n/fa';
 
 export default function OfflinePage() {
   return (
