@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import { SerwistProvider } from '@serwist/turbopack/react';
 import AntdRegistry from '@/providers/antd-registry';
 import Providers from '@/providers';
 import { AppShell } from '@/features/app-shell';
@@ -88,11 +89,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
-        <AntdRegistry>
-          <Providers>
-            <AppShell>{children}</AppShell>
-          </Providers>
-        </AntdRegistry>
+        <SerwistProvider swUrl="/serwist/sw.js">
+          <AntdRegistry>
+            <Providers>
+              <AppShell>{children}</AppShell>
+            </Providers>
+          </AntdRegistry>
+        </SerwistProvider>
       </body>
     </html>
   );
