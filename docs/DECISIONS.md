@@ -177,3 +177,19 @@ Format:
   custom `.btn` CSS is deleted. `Icon`/`Image`/`Container`/`Carousel` stay bespoke: icons are Iconsax-specific,
   images use `next/image`, and the carousel was already decided custom in D-013. Any remaining visual deltas vs
   the audited reference must be tuned via antd theme tokens, not bespoke CSS.
+
+## D-023 Mock backend served as in-process Next API routes
+- Date: 2026-10-10
+- Status: accepted
+- Context: PLAN D-018 said the mock should run in-process via MSW at all times, but the MSW worker was never
+  wired into the app — only into tests — so the homepage SWR hooks hit `/api/...` and got 404 in the running
+  browser. Wiring the MSW browser worker now would conflict with the PWA service worker: setupWorker and Serwist
+  both claim scope `/`, the last registration (Serwist, `clientsClaim`) wins, and mocked requests stop being
+  intercepted.
+- Decision: serve the mock directly from the Next server as real routes — `GET /api/main-page/apps-nested` and
+  `GET /api/banners` — returning the same `{ statusCode, message, data }` envelope over the same
+  `src/mocks/data/*.json` fixtures the MSW handlers use (`src/shared/api/mockEnvelope.ts`). No separate service,
+  no env gating, works in dev, standalone and after install; no second service worker.
+- Consequences: MSW stays only in tests (unchanged). The service worker never sees API traffic, so offline is
+  represented by SWR's normal error state, not stale mock data. Real-backend migration later is just pointing
+  `NEXT_PUBLIC_API_BASE_URL` at it or adding a `proxy.ts` rewrite over these routes.
