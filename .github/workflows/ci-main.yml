@@ -94,6 +94,28 @@ jobs:
           retention-days: 5
           if-no-files-found: ignore
 
+  prebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm dlx vercel@latest pull --yes --environment=production --token=$VERCEL_TOKEN
+      - run: pnpm dlx vercel@latest build --prod --token=$VERCEL_TOKEN
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vercel-output
+          path: .vercel
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+
   main-ok:
     if: always()
     needs: [checks, build, e2e, web-vitals]
@@ -105,3 +127,36 @@ jobs:
       - name: Fail if any check failed or was cancelled
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
         run: exit 1
+
+  deploy:
+    needs: [main-ok, prebuild]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    permissions:
+      contents: read
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: vercel-output
+          path: .
+      - name: Deploy to Vercel
+        shell: bash
+        run: |
+          pnpm dlx vercel@latest deploy --prebuilt --prod --token=$VERCEL_TOKEN | tee deploy.txt
+          grep -Eo 'https://[a-zA-Z0-9.-]+' deploy.txt | sort -u > urls.txt || true
+          printf '## Vercel Deployment\n' >> "$GITHUB_STEP_SUMMARY"
+          if [ -s urls.txt ]; then
+            sed 's/^/Deployment URL: /' urls.txt >> "$GITHUB_STEP_SUMMARY"
+          else
+            printf 'Deployment URL: see deploy step log\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          rm -f deploy.txt urls.txt
