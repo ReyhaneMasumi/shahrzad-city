@@ -224,3 +224,41 @@ Format:
 - Consequences: installability is satisfied (an `any` icon exists) and Android adaptive launchers get a safe
   maskable render. Regenerating the set after a brand change is one command; committed PNGs stay the build-time
   source of truth for standalone/Docker, where `public/` travel with the image (Dockerfile already copies it).
+
+## D-026 GitHub Actions CI/CD topology and deploy gating
+- Date: 2026-10-11
+- Status: accepted
+- Context: the repo had no CI/CD. Requirement: a fast PR gate and a full main pipeline that gates a Vercel
+  production deploy behind tests and a hard Core Web Vitals budget, without the two drifting apart.
+- Options: (a) one workflow per branch set with duplicated jobs; (b) a reusable `checks.yml` (`workflow_call`)
+  consumed by both `ci-pr.yml` and `ci-main.yml`; (c) run e2e/Web Vitals on the PR too.
+- Decision:
+  - **Triggers:** `ci-pr.yml` on `pull_request -> main` (only when a PR exists; no secrets to forks;
+    `cancel-in-progress: true`). `ci-main.yml` on `push -> main` with `concurrency: main, cancel-in-progress:
+    false` so an in-flight production deploy is never cancelled.
+  - **One gate name:** `pr-ok` / `main-ok` are thin `if: always()` jobs that fail when any dependency is
+    `failure` or `cancelled`. Only `pr-ok` is required in the `main` ruleset.
+  - **Main pipeline:** `checks` + `build` + `prebuild` start together; `build -> (e2e, web-vitals)`; all four
+    feed `main-ok`; `deploy` (`needs: [main-ok, prebuild]`, `environment: production`) runs
+    `vercel deploy --prebuilt --prod`. `prebuild` (Vercel pull+build) runs in parallel, so it usually does
+    not extend the critical path. A red gate means no deploy.
+  - **Web Vitals:** Lighthouse CI, desktop preset, median of 3, error-level thresholds in `lighthouserc.json`
+    (perf ≥ 0.9, LCP ≤ 2500 ms, FCP ≤ 1800 ms, CLS ≤ 0.1, TBT ≤ 200 ms, server-response-time ≤ 800 ms) measured
+    against a local `next start` in parallel with e2e. TBT proxies INP — a lab run cannot measure interaction.
+  - **Vercel auto-deploy disabled** via committed `vercel.json` (`git.deploymentEnabled: false`); production
+    is reachable only through the main workflow after the gate.
+  - **e2e shard-ready:** matrix `shard: [1]`; bump to `[1,2,3,4]` when the suite grows without touching anything
+    else (the command already uses `strategy.job-total`).
+  - **Secrets:** repository-level `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`; no secrets in the PR
+    gate.
+- Consequences: PR and main share the exact same `lint`/`unit`/`integration` jobs, so they cannot drift, and
+  the PR gate is the single required check. Known limitation: the single `main-ok` fail-if-any gate is
+  conservative — if any main job fails (say only `lint`), `deploy` is skipped and `main` shows red, while
+  `e2e` and `web-vitals` still run (they only need `build`); if `build` fails, `e2e` and `web-vitals` are
+  also skipped. e2e and Web Vitals only run on `main`, so a break reaches `main` before it is caught; the later
+  refinement is explicit per-job edges (`if: needs.<job>.result == 'success'`) instead of one OR-gate. Vercel
+  PR previews are also off; re-enable later by changing `deploymentEnabled` or adding a preview workflow.
+  `vercel@latest` in the `prebuild`/`deploy` steps is deliberately unpinned (the brief mandates `@latest`);
+  `--frozen-lockfile` does not cover npx-/`pnpm dlx`-fetched tools, so a future Vercel CLI breaking change is the
+  known risk — upgrade-test in a scratch run if Vercel announces CLI breaking changes. Manual, out-of-repo setup
+  (ruleset, secrets, `production` Environment) is documented in the README.

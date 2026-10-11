@@ -1,0 +1,160 @@
+name: Main Pipeline
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml') }}-
+            ${{ runner.os }}-next-
+      - uses: ./.github/actions/setup
+      - run: pnpm build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: |
+            .next
+            public
+            !.next/cache
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 1
+
+  e2e:
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1] # bump to [1,2,3,4] when the suite grows
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-playwright-
+      - uses: ./.github/actions/setup
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+      - run: pnpm exec playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.shard }}
+          path: playwright-report/
+          retention-days: 5
+          if-no-files-found: ignore
+
+  web-vitals:
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+      - run: pnpm exec lhci autorun 2>&1 | sed -E 's/\x1B\[[0-9;]*[mK]//g' | tee -a "$GITHUB_STEP_SUMMARY"
+        shell: bash
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          retention-days: 5
+          if-no-files-found: ignore
+
+  prebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm dlx vercel@latest pull --yes --environment=production --token=$VERCEL_TOKEN
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - run: pnpm dlx vercel@latest build --prod --token=$VERCEL_TOKEN
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vercel-output
+          path: |
+            .vercel/output
+            .vercel/project.json
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+
+  main-ok:
+    if: always()
+    needs: [checks, build, e2e, web-vitals]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fail if any check failed or was cancelled
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
+  deploy:
+    needs: [main-ok, prebuild]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: vercel-output
+          path: .vercel
+      - name: Deploy to Vercel
+        shell: bash
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx --yes vercel@latest deploy --prebuilt --prod --token=$VERCEL_TOKEN | tee deploy.txt
+          url="$(grep -oE 'Production: https://[^ ]+' deploy.txt | sed 's/Production: //' | head -1 || true)"
+          if [ -z "$url" ]; then
+            url="$(grep -oE 'https://[a-z0-9-]+\.vercel\.app' deploy.txt | tail -1 || true)"
+          fi
+          printf '## Vercel Deployment\n' >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$url" ]; then
+            printf 'Deployment URL: %s\n' "$url" >> "$GITHUB_STEP_SUMMARY"
+          else
+            printf 'Deployment URL: see deploy step log\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          rm -f deploy.txt

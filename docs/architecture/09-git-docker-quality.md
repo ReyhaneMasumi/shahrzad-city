@@ -53,8 +53,103 @@ Dockerfile (multi-stage)
 - `.env.example` lists every variable with comments and safe placeholders. `.env*` real files are git-ignored.
 - Typed parsing in `src/shared/config/env.ts` that throws on startup if invalid.
 
-## CI (GitHub Actions, optional but recommended)
-Jobs: install (cache pnpm) → lint → typecheck → test → build → e2e (Playwright container) → docker build (no push). Fail on warnings from the build.
+## CI/CD (GitHub Actions)
+
+Two pipelines share one reusable checks workflow so the PR gate and `main` can never drift.
+Node 22 comes from `.nvmrc`; pnpm is installed by `pnpm/action-setup@v4` and every install uses
+`pnpm install --frozen-lockfile`. The composite action `.github/actions/setup` centralizes
+Node + pnpm + dependency install (with the pnpm store cache) for every job.
+
+### PR gate — `.github/workflows/ci-pr.yml`
+Runs on `pull_request` targeting `main` only (no wasted minutes on branches without a PR, and no
+secrets are exposed to fork PRs). `cancel-in-progress: true` on group `pr-${{ github.ref }}`, so a
+newer push makes the older run stale.
+
+```
+[pull_request -> main]
+        |
+   +----+----+
+ [lint] [unit] [integration]        <- reusable checks.yml, run in parallel
+   |      |        |
+   +------+--------+
+        |
+     [pr-ok]                        <- the ONLY required status check (if: always())
+```
+
+`checks.yml` (`on: workflow_call`) owns the three jobs: `lint` (`pnpm lint` + `pnpm typecheck`),
+`unit` (`pnpm test:unit`), `integration` (`pnpm test:int`). Each is `ubuntu-latest`,
+`timeout-minutes: 10`, `permissions: { contents: read }`. `pr-ok` is a thin `if: always()` job that
+fails when any dependency's result is `failure` or `cancelled` — one stable check name for the
+branch ruleset.
+
+### Main — `.github/workflows/ci-main.yml`
+Runs on `push` to `main`. `concurrency: { group: main, cancel-in-progress: false }` — a running
+success wave is never interrupted (cancelling could kill an in-flight production deploy).
+
+```
+[push -> main]
+      |
+ +----+----+----------------------+
+[checks] [build] [prebuild]         <- checks = reusable; prebuild = vercel pull + vercel build
+  |        |         |
+  |     +--+--+      |
+  |   [e2e] [web-vitals]            <- both need build; run in parallel
+  |     |      |      |
+  +-----+------+------+
+               |
+           [main-ok]                 <- if: always(); fail if any of checks/build/e2e/web-vitals failed
+               |
+           [deploy]                 <- needs: [main-ok, prebuild]; environment: production
+                                       vercel deploy --prebuilt --prod
+```
+
+- `build`: caches `.next/cache`, runs `pnpm build`, uploads artifact `next-build` (`.next` +
+  `public`, excluding `!.next/cache`, hidden files included, 1-day retention).
+- `e2e`: shard-ready matrix `shard: [1]` (single shard today; bump to `[1,2,3,4]` in one line).
+  Downloads `next-build`, installs Playwright browsers (cached), runs
+  `playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}`, and uploads
+  `playwright-report-${{ matrix.shard }}` on failure. The Playwright `webServer` starts `pnpm start`
+  in CI (no rebuild) so the prebuilt `.next` is reused.
+- `web-vitals`: downloads `next-build`, runs `pnpm exec lhci autorun` against a local `next start`
+  (see `lighthouserc.json`), tees the median report into the job summary, and uploads `.lighthouseci`
+  on failure.
+- `prebuild`: `vercel pull --yes --environment=production` then `vercel build --prod`, uploading
+  `vercel-output` (`.vercel/output` + `.vercel/project.json`). It runs in parallel with the tests,
+  so it usually does not extend the critical path.
+- `deploy`: `needs: [main-ok, prebuild]`, `if: github.ref == 'refs/heads/main'`,
+  `environment: production`, own `concurrency: { group: deploy-production, cancel-in-progress: false }`.
+  Downloads `vercel-output` and runs `vercel deploy --prebuilt --prod`, writing the URL to the job
+  summary.
+
+The Web Vitals and e2e gates are **blocking**: a red gate fails `main-ok` and `deploy` never runs.
+
+### Required status check and ruleset (manual, repository settings)
+- **Required check: `pr-ok` only.** Add it in Settings → Rules → Rulesets for `main` (require a PR
+  before merging, require status checks, block force pushes/deletions). Do **not** require the
+  individual `lint`/`unit`/`integration` jobs — `pr-ok` aggregates them.
+- "Require branches to be up to date before merging": **off** (near-solo repo; re-runs the whole
+  gate after every merge for little gain).
+- GitHub Environment `production`: deployment branch rule `main` only; no required reviewers
+  (a manual click would block every deploy).
+
+### Secrets
+Repository-level secrets, read by `prebuild` and `deploy`:
+`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. `vercel.json`
+(`{ "git": { "deploymentEnabled": false } }`) disables Vercel's own Git auto-deploys, so the only
+path to production is this workflow.
+
+### Web Vitals budget (`lighthouserc.json`)
+Chrome **desktop** preset, `numberOfRuns: 3` (median), local `next start`. Error-level thresholds:
+performance score ≥ 0.9, LCP ≤ 2500 ms, FCP ≤ 1800 ms, CLS ≤ 0.1, TBT ≤ 200 ms,
+server-response-time ≤ 800 ms. Read a failure in the job log / `lhci` diff line, e.g.
+`Performance 0.82 (un) -> 0.9 (un)`. TBT proxies INP (a lab run cannot measure interaction).
+
+### Known limitation
+The single `main-ok` fail-if-any gate is conservative: if any main job fails (say only `lint`),
+`deploy` is skipped and `main` shows red, while `e2e` and `web-vitals` still run (they only need
+`build`); if `build` fails, `e2e` and `web-vitals` are also skipped. e2e and Web Vitals do not run
+on the PR gate, so a break reaches `main` before it is caught. Deliberate trade-off; the later
+refinement is explicit per-job edges (`if: needs.<job>.result == 'success'`) instead of one OR-gate.
 
 ## README (final deliverable)
 Sections: overview and screenshots; features; improvements over the original site; tech stack and why; architecture (folder map, component pattern, data flow diagram); run locally; run with Docker (and compose); environment variables table; scripts; testing (3 levels, how to run); performance and SEO results; decisions (link to `docs/DECISIONS.md`); limitations; **AI tools used and the full process** (which tools, for what, how outputs were verified, what was rejected); license/credits.

@@ -36,11 +36,11 @@ export default defineConfig({
     },
     {
       name: 'tablet',
-      use: { ...devices['iPad Pro'] },
+      use: { ...devices['iPad Pro 11'] },
     },
   ],
   webServer: {
-    command: 'pnpm build && pnpm start',
+    command: process.env.CI ? 'pnpm start' : 'pnpm build && pnpm start',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 180000,
