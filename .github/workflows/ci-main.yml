@@ -72,9 +72,31 @@ jobs:
           retention-days: 5
           if-no-files-found: ignore
 
+  web-vitals:
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+      - run: pnpm exec lhci autorun 2>&1 | sed -E 's/\x1B\[[0-9;]*[mK]//g' | tee -a "$GITHUB_STEP_SUMMARY"
+        shell: bash
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          retention-days: 5
+          if-no-files-found: ignore
+
   main-ok:
     if: always()
-    needs: [checks, build, e2e]
+    needs: [checks, build, e2e, web-vitals]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
