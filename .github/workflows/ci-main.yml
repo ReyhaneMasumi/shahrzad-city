@@ -1,0 +1,85 @@
+name: Main Pipeline
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml') }}-
+            ${{ runner.os }}-next-
+      - uses: ./.github/actions/setup
+      - run: pnpm build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: |
+            .next
+            public
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 1
+
+  e2e:
+    needs: [build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1] # bump to [1,2,3,4] when the suite grows
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-playwright-
+      - uses: ./.github/actions/setup
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+      - run: pnpm exec playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-${{ matrix.shard }}
+          path: playwright-report/
+          retention-days: 5
+          if-no-files-found: ignore
+
+  main-ok:
+    if: always()
+    needs: [checks, build, e2e]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Fail if any check failed or was cancelled
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
