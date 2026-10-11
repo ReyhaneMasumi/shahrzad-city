@@ -146,7 +146,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          npx vercel@latest deploy --prebuilt --prod --token=$VERCEL_TOKEN | tee deploy.txt
+          npx --yes vercel@latest deploy --prebuilt --prod --token=$VERCEL_TOKEN | tee deploy.txt
           url="$(grep -oE 'Production: https://[^ ]+' deploy.txt | sed 's/Production: //' | head -1 || true)"
           if [ -z "$url" ]; then
             url="$(grep -oE 'https://[a-z0-9-]+\.vercel\.app' deploy.txt | tail -1 || true)"

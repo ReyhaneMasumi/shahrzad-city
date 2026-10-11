@@ -258,4 +258,7 @@ Format:
   also skipped. e2e and Web Vitals only run on `main`, so a break reaches `main` before it is caught; the later
   refinement is explicit per-job edges (`if: needs.<job>.result == 'success'`) instead of one OR-gate. Vercel
   PR previews are also off; re-enable later by changing `deploymentEnabled` or adding a preview workflow.
-  Manual, out-of-repo setup (ruleset, secrets, `production` Environment) is documented in the README.
+  `vercel@latest` in the `prebuild`/`deploy` steps is deliberately unpinned (the brief mandates `@latest`);
+  `--frozen-lockfile` does not cover npx-/`pnpm dlx`-fetched tools, so a future Vercel CLI breaking change is the
+  known risk — upgrade-test in a scratch run if Vercel announces CLI breaking changes. Manual, out-of-repo setup
+  (ruleset, secrets, `production` Environment) is documented in the README.
