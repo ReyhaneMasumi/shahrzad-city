@@ -18,8 +18,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -37,6 +35,7 @@ jobs:
           path: |
             .next
             public
+            !.next/cache
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 1
@@ -45,8 +44,6 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    permissions:
-      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -76,8 +73,6 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
@@ -97,21 +92,25 @@ jobs:
   prebuild:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: read
-    env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: pnpm dlx vercel@latest pull --yes --environment=production --token=$VERCEL_TOKEN
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       - run: pnpm dlx vercel@latest build --prod --token=$VERCEL_TOKEN
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       - uses: actions/upload-artifact@v4
         with:
           name: vercel-output
-          path: .vercel
+          path: |
+            .vercel/output
+            .vercel/project.json
           include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
@@ -121,8 +120,6 @@ jobs:
     needs: [checks, build, e2e, web-vitals]
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    permissions:
-      contents: read
     steps:
       - name: Fail if any check failed or was cancelled
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
@@ -134,29 +131,30 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production
-    permissions:
-      contents: read
     concurrency:
       group: deploy-production
       cancel-in-progress: false
-    env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: vercel-output
-          path: .
+          path: .vercel
       - name: Deploy to Vercel
         shell: bash
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          pnpm dlx vercel@latest deploy --prebuilt --prod --token=$VERCEL_TOKEN | tee deploy.txt
-          grep -Eo 'https://[a-zA-Z0-9.-]+' deploy.txt | sort -u > urls.txt || true
+          npx vercel@latest deploy --prebuilt --prod --token=$VERCEL_TOKEN | tee deploy.txt
+          url="$(grep -oE 'Production: https://[^ ]+' deploy.txt | sed 's/Production: //' | head -1 || true)"
+          if [ -z "$url" ]; then
+            url="$(grep -oE 'https://[a-z0-9-]+\.vercel\.app' deploy.txt | tail -1 || true)"
+          fi
           printf '## Vercel Deployment\n' >> "$GITHUB_STEP_SUMMARY"
-          if [ -s urls.txt ]; then
-            sed 's/^/Deployment URL: /' urls.txt >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$url" ]; then
+            printf 'Deployment URL: %s\n' "$url" >> "$GITHUB_STEP_SUMMARY"
           else
             printf 'Deployment URL: see deploy step log\n' >> "$GITHUB_STEP_SUMMARY"
           fi
-          rm -f deploy.txt urls.txt
+          rm -f deploy.txt
