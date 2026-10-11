@@ -267,6 +267,7 @@ automation in `docs/audit/scripts/`) and its behavior was written down
 - Header nav links (`/faq`, `/about-shahrzad`, `/wallet`, `/qr-payment`, `/shahrzad-services`) return 404 (only `/` and `/_not-found` implemented)
 - Parent tile (`parent_tile` type) flyout behavior not fully specified in reference
 - Responsive aspect-ratio swap for hero banner deferred (uses mobile aspect on all breakpoints)
+- `useHomeSections` complexity warning (15 > 10) - structural, no behavior change
 
 ## License
 
