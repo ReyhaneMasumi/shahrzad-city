@@ -10,11 +10,13 @@ test.describe('Home page', () => {
   test('should load without console errors', async ({ page }) => {
     const errors: string[] = [];
     page.on('console', (msg) => {
-      if (msg.type() === 'error') errors.push(msg.text());
+      // Playwright omits the resource URL from msg.text(); append it so the
+      // ignored predicate can scope past expected next/link RSC prefetch 404s.
+      if (msg.type() === 'error') errors.push(`${msg.text()} ${msg.location().url}`);
     });
     await page.waitForTimeout(2000);
     const ignored = (e: string) =>
-      e.includes('favicon') || e.includes('404') || e.includes('Failed to load resource');
+      e.includes('favicon') || (e.includes('?_rsc=') && e.includes('404'));
     expect(errors.filter((e) => !ignored(e))).toHaveLength(0);
   });
 
