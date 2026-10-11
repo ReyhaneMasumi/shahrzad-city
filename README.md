@@ -1,6 +1,6 @@
 # Shahrzad Homepage
 
-Production-ready recreation of the Shahrzad homepage (https://web.shahrzadcity.ir/home).
+Production-ready recreation of the Shahrzad homepage ([https://web.shahrzadcity.ir/home](https://web.shahrzadcity.ir/home)).
 
 ## Stack
 
@@ -65,10 +65,10 @@ docker-compose up --build
 
 ## Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `NEXT_PUBLIC_API_BASE_URL` | No | `/api` | Base URL for API calls (relative for in-process MSW) |
-| `NEXT_PUBLIC_SITE_URL` | No | `https://web.shahrzadcity.ir` | Canonical site URL for SEO (sitemap, OG, manifest) |
+| Variable                   | Required | Default                       | Description                                          |
+| -------------------------- | -------- | ----------------------------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_API_BASE_URL` | No       | `/api`                        | Base URL for API calls (relative for in-process MSW) |
+| `NEXT_PUBLIC_SITE_URL`     | No       | `https://web.shahrzadcity.ir` | Canonical site URL for SEO (sitemap, OG, manifest)   |
 
 Copy `.env.example` to `.env.local` for local overrides.
 
@@ -130,29 +130,35 @@ src/
 ## Key Architectural Decisions
 
 ### SSR-First, Client Only Where Needed
+
 - Server Components by default
 - `'use client'` only on leaves that need state/effects (header, hero, sections, shell)
 - No unnecessary client boundaries
 
 ### Data Flow
+
 ```
 API types → endpoint function → SWR key → SWR hook → mapper → view-model → UI
 ```
+
 Components never call Axios or `fetch` directly. Server data lives in SWR; Zustand holds only UI state.
 
 ### RTL & Persian
+
 - `dir="rtl"`, `lang="fa"` on `<html>`
 - Logical Tailwind utilities only (`ms-*`, `me-*`, `ps-*`, `pe-*`, `start-*`, `end-*`)
 - All Persian UI copy centralized in `src/shared/i18n/fa.ts`
 - Font: IRANSans via `next/font` (SSR-safe, no layout shift)
 
 ### Design System
+
 - Tokens defined once in `src/shared/design/palette.ts`
 - Mirrored to CSS custom properties in `src/styles/tokens.css`
 - Consumed by AntD `ConfigProvider` (`cssVar: { key: 'app' }`) and Tailwind `@theme`
 - Guarded by `palette.test.ts`
 
 ### Mock Backend (MSW)
+
 - Runs in-process in **both dev and production** (no separate service)
 - `instrumentation.ts` (Node) + `instrumentation-client.ts` (browser worker)
 - Endpoints:
@@ -162,24 +168,25 @@ Components never call Axios or `fetch` directly. Server data lives in SWR; Zusta
 
 ## Features Implemented
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Header (desktop + mobile) | ✅ | Scroll shrink on mobile, responsive nav |
-| Hero Banner (static + carousel) | ✅ | Priority image, preload, scroll-snap carousel |
-| Services Grid (tiles) | ✅ | 4-col grid, skeleton loading, empty/error states |
-| Footer (desktop) | ✅ | Fixed, scroll-reveal animation |
-| Bottom Navigation (mobile) | ✅ | Wallet / QR / Services |
-| Back-to-Top (mobile) | ✅ | In-flow button above footer spacer |
-| SEO (metadata, OG, sitemap, robots, manifest, JSON-LD) | ✅ | WebSite structured data |
-| Global error boundaries | ✅ | `error.tsx`, `global-error.tsx` |
-| Accessibility | ✅ | Landmarks, focus-visible, ARIA labels, RTL icons |
-| Unit + Integration tests | ✅ | 86 tests, coverage gates enforced |
-| E2E tests | ✅ | Playwright (desktop / mobile / tablet) |
-| PWA (metadata, SW, favicons) | ✅ | Manifest, Serwist service worker, generated icon set |
+| Feature                                                | Status | Notes                                                |
+| ------------------------------------------------------ | ------ | ---------------------------------------------------- |
+| Header (desktop + mobile)                              | ✅     | Scroll shrink on mobile, responsive nav              |
+| Hero Banner (static + carousel)                        | ✅     | Priority image, preload, scroll-snap carousel        |
+| Services Grid (tiles)                                  | ✅     | 4-col grid, skeleton loading, empty/error states     |
+| Footer (desktop)                                       | ✅     | Fixed, scroll-reveal animation                       |
+| Bottom Navigation (mobile)                             | ✅     | Wallet / QR / Services                               |
+| Back-to-Top (mobile)                                   | ✅     | In-flow button above footer spacer                   |
+| SEO (metadata, OG, sitemap, robots, manifest, JSON-LD) | ✅     | WebSite structured data                              |
+| Global error boundaries                                | ✅     | `error.tsx`, `global-error.tsx`                      |
+| Accessibility                                          | ✅     | Landmarks, focus-visible, ARIA labels, RTL icons     |
+| Unit + Integration tests                               | ✅     | 86 tests, coverage gates enforced                    |
+| E2E tests                                              | ✅     | Playwright (desktop / mobile / tablet)               |
+| PWA (metadata, SW, favicons)                           | ✅     | Manifest, Serwist service worker, generated icon set |
 
 ## Visual Fidelity
 
 Implementation matches reference screenshots at:
+
 - Mobile: 360px (header shrink, bottom nav, back-to-top)
 - Tablet: 768px (mobile shell)
 - Desktop: 1440px (static header, footer reveal, 4-col grid)
@@ -197,6 +204,7 @@ Animations respect `prefers-reduced-motion`.
 ## Docker
 
 Multi-stage `Dockerfile`:
+
 1. `base` - Node 22 + pnpm
 2. `builder` - Install deps, `pnpm build` (output: `standalone`)
 3. `runner` - Non-root user, copy standalone output, healthcheck
@@ -219,6 +227,7 @@ folders (`src/**/lib/**`, `src/shared/api/**`, `src/shared/design/**`) `85/85/85
 ## AI Tools Used
 
 This project was built with assistance from:
+
 - **OpenCode** (coding agent) - implementation, debugging, test generation
 - **Next.js bundled docs** (version-matched) - API reference
 - **Ant Design MCP** - component API verification
@@ -262,12 +271,33 @@ automation in `docs/audit/scripts/`) and its behavior was written down
 7. **Performance** - Static prerendering, hero preload, optimized images
 8. **Maintainability** - Feature-based structure, SOLID principles, small files
 
-## Known Limitations
+## Project Planning, Development, and Quality Assurance
 
-- Header nav links (`/faq`, `/about-shahrzad`, `/wallet`, `/qr-payment`, `/shahrzad-services`) return 404 (only `/` and `/_not-found` implemented)
-- Parent tile (`parent_tile` type) flyout behavior not fully specified in reference
-- Responsive aspect-ratio swap for hero banner deferred (uses mobile aspect on all breakpoints)
-- `useHomeSections` complexity warning (15 > 10) - structural, no behavior change
+### 1. Requirements Gathering and AI-Assisted Planning
+
+I started by writing an informal prompt in plain language, describing the project, its technology stack, required tools, visual specifications, functional requirements, essential features, and constraints defining what should and should not be implemented.
+
+I provided this description separately to ChatGPT and Claude, asking them to transform it into professional prompts and structured instructions for the OpenCode AI agent. I also incorporated publicly available guidelines for styling, React development, and component design, along with relevant agent instructions and skills.
+
+I then shared ChatGPT's output with Claude for comparison and refinement. This iterative process resulted in a consolidated set of instructions, skills, and a development plan, which I provided to OpenCode to begin implementation.
+
+### 2. Visual Analysis and Implementation
+
+Since no Figma designs or design files were available, I used Chrome extensions to inspect the existing website and extract its visual properties. I also provided screenshots of different pages and responsive layouts as references.
+
+OpenCode leveraged vision-capable models and browser automation to inspect the website through a headless browser, log in, explore relevant pages, and generate scripts to identify interface elements.
+
+Given the lack of detailed design specifications, the implementation was primarily based on screenshots and visual references rather than precise design files. As a result, some minor visual discrepancies may remain, which are expected under these constraints. We prioritized core functionality and overall visual consistency rather than spending excessive time on pixel-perfect details. These minor differences can be addressed through further refinement as the implementation becomes more precise.
+
+Some features and integrations from the original website were intentionally excluded due to resource constraints or the scope of the implementation. These included Sentry, Google Tag Manager and Analytics, and certain map API requests that were not required on the homepage.
+
+### 3. CI/CD and Quality Assurance
+
+I established a deployment pipeline designed to run tests in parallel wherever possible to minimize pipeline execution time. Before code can be merged into the main branch, all required tests must pass, including unit, integration, and end-to-end tests. Defined test coverage thresholds must also be met.
+
+Additionally, Core Web Vitals must achieve acceptable performance scores before a merge is allowed. These checks serve as quality gates, preventing code from being merged when testing or performance requirements are not satisfied.
+
+Together, these processes establish a structured workflow for AI-assisted planning and development while maintaining code quality, visual consistency, test coverage, and application performance.
 
 ## License
 
