@@ -6,27 +6,32 @@ import { Empty, SectionHead, SectionStates, Skeleton } from '@/shared/ui';
 import HomeTile from './HomeTile';
 import type { HomeSectionsProps } from './HomeSections.types';
 
-const SKELETON_COUNT = 8;
+const SKELETON_COUNT = 16;
 
 export default function HomeSections(_props: HomeSectionsProps) {
   const { status, data, retry } = useHomeSections();
 
   const skeletonGrid = Array.from({ length: SKELETON_COUNT }, (_, i) => (
-    <Skeleton key={i} className="home-sections-skeleton-grid" rounded width="76px" height="86px" />
+    <Skeleton key={i} className="home-sections-skeleton-tile" rounded width="76px" height="86px" />
   ));
 
   if (status === 'loading') {
     return (
-      <SectionStates status="loading">
-        <SectionHead
-          title={fa.header.services.label}
-          href={fa.header.services.href}
-          actionLabel={fa.common.seeAll}
-        />
-        <div className="home-sections-grid" role="list" aria-label={fa.header.services.label}>
-          {skeletonGrid}
-        </div>
-      </SectionStates>
+      <SectionStates
+        status="loading"
+        skeleton={
+          <>
+            <SectionHead
+              title={fa.header.services.label}
+              href={fa.header.services.href}
+              actionLabel={fa.common.seeAll}
+            />
+            <div className="home-sections-grid" role="list" aria-label={fa.header.services.label}>
+              {skeletonGrid}
+            </div>
+          </>
+        }
+      />
     );
   }
 

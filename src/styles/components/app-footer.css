@@ -18,4 +18,9 @@
   .app-footer-link {
     @apply text-caption font-medium text-white;
   }
+
+  .app-footer-link a,
+  .app-footer-link a:hover {
+    @apply text-white;
+  }
 }

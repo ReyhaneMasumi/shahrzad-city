@@ -14,7 +14,7 @@ export default function HeroBanner(_props: HeroBannerProps) {
   if (status === 'loading') {
     return (
       <div className="relative w-full" style={{ aspectRatio: MOBILE_ASPECT }}>
-        <Skeleton className="hero-banner-skeleton" />
+        <Skeleton className="hero-banner-skeleton" height="100%" />
       </div>
     );
   }

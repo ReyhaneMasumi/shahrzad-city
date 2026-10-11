@@ -6,5 +6,5 @@ export interface SectionStatesProps {
   onRetry?: () => void;
   emptyMessage?: string;
   emptyAction?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
 }

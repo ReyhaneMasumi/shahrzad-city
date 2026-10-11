@@ -16,11 +16,11 @@
   }
 
   .bottom-nav {
-    @apply fixed inset-x-0 bottom-0 z-[var(--z-index-bottom-nav)] h-[92px] bg-white pb-[env(safe-area-inset-bottom)] lg:hidden;
+    @apply fixed inset-x-0 bottom-0 z-[var(--z-index-bottom-nav)] flex h-[92px] items-center bg-[#ffffff70]  pb-[env(safe-area-inset-bottom)] lg:hidden;
   }
 
   .bottom-nav-inner {
-    @apply relative mx-auto flex h-[48px] max-w-[360px] items-center justify-between rounded-full bg-white px-md shadow-bottom-sheet;
+    @apply relative mx-auto flex h-[48px] w-[360px] items-center justify-between rounded-full bg-white px-md shadow-bottom-sheet;
   }
 
   .bottom-nav-item {
@@ -32,7 +32,7 @@
   }
 
   .bottom-nav-qr {
-    @apply absolute left-1/2 top-1/2 flex size-[52px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-12 bg-[var(--color-primary-10)];
+    @apply absolute left-1/2 top-1/2 flex size-[70px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-16 bg-[var(--color-primary-10)];
   }
 
   .carousel-root {
@@ -40,7 +40,7 @@
   }
 
   .carousel-wrapper {
-    @apply relative m-lg overflow-hidden rounded-12 bg-white;
+    @apply relative m-sm overflow-hidden rounded-12 bg-white;
   }
 
   .carousel-inner {

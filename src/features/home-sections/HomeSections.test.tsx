@@ -1,5 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { http, HttpResponse } from 'msw';
+import { render, screen, waitFor, within } from '@testing-library/react';
+import { http, HttpResponse, delay } from 'msw';
 import { describe, expect, it, afterEach } from 'vitest';
 import { server } from '@/mocks/server';
 import { SWRConfig } from 'swr';
@@ -25,10 +25,11 @@ const mockTile = {
   child: [],
 };
 
-function serveTiles(data: (typeof mockTile)[]) {
+function serveTiles(data: (typeof mockTile)[], responseDelayMs = 0) {
   server.use(
-    http.get('*/main-page/apps-nested', () =>
-      HttpResponse.json({
+    http.get('*/main-page/apps-nested', async () => {
+      if (responseDelayMs > 0) await delay(responseDelayMs);
+      return HttpResponse.json({
         statusCode: 200,
         message: 'OK',
         data: {
@@ -37,8 +38,8 @@ function serveTiles(data: (typeof mockTile)[]) {
           main: data,
           wallet: [],
         },
-      })
-    )
+      });
+    })
   );
 }
 
@@ -101,16 +102,18 @@ describe('HomeSections', () => {
     });
   });
 
-  it('shows skeleton grid while loading', async () => {
-    serveTiles([mockTile]);
+  it('shows a 4x4 skeleton grid while loading', async () => {
+    serveTiles([mockTile], 50);
     render(
       <SWRConfig value={{ provider: () => new Map() }}>
         <HomeSections />
       </SWRConfig>
     );
     await waitFor(() => {
-      const skeletons = screen.getAllByRole('generic', { hidden: true });
-      expect(skeletons.length).toBeGreaterThanOrEqual(8);
+      const list = screen.getByRole('list', { name: fa.header.services.label });
+      expect(within(list).getAllByRole('generic', { hidden: true }).length).toBeGreaterThanOrEqual(
+        16
+      );
     });
   });
 

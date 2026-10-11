@@ -1,6 +1,6 @@
 @layer components {
   .home-tile-row {
-    @apply flex w-full flex-row items-center justify-start gap-2xs text-center;
+    @apply flex w-full lg:flex-row flex-col items-center justify-start gap-2xs text-center;
   }
 
   .home-tile-icon-wrap {
@@ -19,8 +19,8 @@
     @apply flex flex-col items-center justify-start gap-2xs;
   }
 
-  .home-sections-skeleton-grid {
-    @apply flex flex-col items-center gap-2xs;
+  .home-sections-skeleton-tile {
+    @apply justify-self-center;
   }
 
   .home-sections-grid {
