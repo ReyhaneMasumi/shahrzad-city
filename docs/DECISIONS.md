@@ -193,3 +193,17 @@ Format:
 - Consequences: MSW stays only in tests (unchanged). The service worker never sees API traffic, so offline is
   represented by SWR's normal error state, not stale mock data. Real-backend migration later is just pointing
   `NEXT_PUBLIC_API_BASE_URL` at it or adding a `proxy.ts` rewrite over these routes.
+
+## D-024 PWA icons generated from public/brand/favicon.png
+- Date: 2026-10-11
+- Status: accepted
+- Context: favicons and PWA icons previously pointed at files that did not exist (`.ico`, 16/32, apple-touch)
+  or were derived from `logo.svg`. The owner replaced the brand art with `public/brand/favicon.png` (opaque
+  192px source, transparent 1px corners).
+- Decision: one reproducible generator, `scripts/generate-pwa-assets.mjs` (`pnpm generate:icons`, sharp +
+  png-to-ico), emits favicon.ico (16/32), favicon-16x16/32x32, apple-touch-icon (180), and `/icons/icon-{192,512}`
+  in `any` plus `/icons/icon-maskable-{192,512}` with the artwork centered in the central 80% safe zone. The
+  manifest lists both purposes and adds `id: '/'`; metadata now serves real favicon links plus `appleWebApp`.
+- Consequences: installability is satisfied (an `any` icon exists) and Android adaptive launchers get a safe
+  maskable render. Regenerating the set after a brand change is one command; committed PNGs stay the build-time
+  source of truth for standalone/Docker, where `public/` travel with the image (Dockerfile already copies it).
