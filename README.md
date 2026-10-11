@@ -29,12 +29,18 @@ pnpm install
 pnpm dev
 
 # Run tests
-pnpm test            # unit + integration
-pnpm test:e2e        # e2e (requires running dev server)
+pnpm test            # unit + integration (86 tests, Vitest + MSW)
+pnpm test:unit       # unit project only
+pnpm test:int        # integration project only
+pnpm test:cov        # coverage run (thresholds enforced)
+pnpm test:e2e        # e2e (desktop / mobile / tablet projects)
 
 # Lint & typecheck
 pnpm lint
 pnpm typecheck
+
+# Full gate: lint + typecheck + tests + build
+pnpm verify
 
 # Production build
 pnpm build
@@ -72,7 +78,7 @@ Copy `.env.example` to `.env.local` for local overrides.
 src/
 ├── app/                    # Next.js App Router (routing only)
 │   ├── api/health/         # Health check endpoint
-│   ├── globals.css         # Tailwind + global styles
+│   ├── fonts.ts            # IRANSans via next/font/local
 │   ├── layout.tsx          # Root layout + metadata
 │   ├── page.tsx            # Home page (HeroBanner + HomeSections)
 │   ├── robots.ts           # robots.txt
@@ -96,27 +102,29 @@ src/
 │   ├── design/palette.ts   # Design tokens (single source of truth)
 │   ├── hooks/              # Shared hooks (useMediaQuery, useReducedMotion)
 │   ├── i18n/fa.ts          # Persian copy (only place for UI strings)
-│   ├── ui/                 # Design system primitives
-│   │   ├── Button/         # AntD Button wrapper
-│   │   ├── Carousel/       # Scroll-snap carousel + hook
-│   │   ├── Empty/          # AntD Empty wrapper
-│   │   ├── ErrorState/     # AntD Result wrapper
-│   │   ├── Icon/           # Iconsax wrapper
-│   │   ├── Image/          # Next.js Image wrapper
-│   │   ├── SectionHead/    # Heading + divider + see-all
-│   │   ├── SectionStates/  # Loading/empty/error/success wrapper
-│   │   ├── Skeleton/       # AntD Skeleton wrapper
-│   │   ├── Spinner/        # AntD Spin wrapper
-│   │   └── Tile/           # Home service tile
+│   └── ui/                 # Design system primitives
+│       ├── Button/         # AntD Button wrapper
+│       ├── Carousel/       # Scroll-snap carousel + hook
+│       ├── Empty/          # AntD Empty wrapper
+│       ├── ErrorState/     # AntD Result wrapper
+│       ├── Icon/           # Iconsax wrapper
+│       ├── Image/          # Next.js Image wrapper
+│       ├── SectionHead/    # Heading + divider + see-all
+│       ├── SectionStates/  # Loading/empty/error/success wrapper
+│       ├── Skeleton/       # AntD Skeleton wrapper
+│       ├── Spinner/        # AntD Spin wrapper
+│       └── Tile/           # Home service tile
 ├── mocks/                  # MSW handlers + data
 │   ├── handlers.ts
 │   ├── server.ts
 │   ├── browser.ts
 │   └── data/
-├── styles/
-│   ├── index.css           # Tailwind import + CSS layers
-│   └── tokens.css          # CSS custom properties (mirrors palette.ts)
-└── providers/              # Context providers
+└── styles/
+    ├── index.css           # Tailwind import + CSS layers
+    ├── tokens.css          # CSS custom properties (mirrors palette.ts)
+    ├── base.css            # HTML resets + antd bridge
+    ├── typography.css      # Fluid type scale
+    └── components/         # Semantic component classes (@apply)
 ```
 
 ## Key Architectural Decisions
@@ -165,8 +173,9 @@ Components never call Axios or `fetch` directly. Server data lives in SWR; Zusta
 | SEO (metadata, OG, sitemap, robots, manifest, JSON-LD) | ✅ | WebSite structured data |
 | Global error boundaries | ✅ | `error.tsx`, `global-error.tsx` |
 | Accessibility | ✅ | Landmarks, focus-visible, ARIA labels, RTL icons |
-| Unit + Integration tests | ✅ | 77 tests (Vitest + MSW) |
-| E2E tests | ✅ | Playwright (chromium) |
+| Unit + Integration tests | ✅ | 86 tests, coverage gates enforced |
+| E2E tests | ✅ | Playwright (desktop / mobile / tablet) |
+| PWA (metadata, SW, favicons) | ✅ | Manifest, Serwist service worker, generated icon set |
 
 ## Visual Fidelity
 
@@ -197,9 +206,15 @@ No secrets in image. Config via runtime env vars.
 ## Testing
 
 ```bash
-pnpm test          # 77 unit/integration tests (Vitest + MSW)
-pnpm test:e2e      # Playwright (chromium by default)
+pnpm test:unit       # unit project only
+pnpm test:int        # integration project only
+pnpm test:cov        # coverage run with enforced thresholds
+pnpm test:e2e        # Playwright (desktop / mobile / tablet projects)
+pnpm verify          # full gate: lint + typecheck + tests + build
 ```
+
+Coverage thresholds (enforced in `vitest.config.ts`): global `60/60/60/50`; logic and data
+folders (`src/**/lib/**`, `src/shared/api/**`, `src/shared/design/**`) `85/85/85/75`.
 
 ## AI Tools Used
 
@@ -210,6 +225,31 @@ This project was built with assistance from:
 - **Context7** - library documentation lookup
 
 The AI was used for code generation, test writing, bug fixes, and architectural guidance. All code was reviewed and approved by the human author.
+
+**Process:** every task followed the session protocol in `AGENTS.md` — plan before code,
+doc-check before using a library API, one Conventional Commit per task, and `pnpm verify`
+as the definition of done. The reference site was investigated programmatically (browser
+automation in `docs/audit/scripts/`) and its behavior was written down
+(`docs/audit/`, `docs/API.md`) before implementation. Architectural decisions are logged in
+`docs/DECISIONS.md`.
+
+## Brief Compliance
+
+- [x] Next.js 16 + React + TypeScript strict + Tailwind + Ant Design + Zustand + SWR + Axios
+- [x] Iconsax icons only
+- [x] Font investigated and justified (`docs/fonts.md`)
+- [x] Header, navigation, tiles, banners, footer
+- [x] Responsive: mobile, tablet, desktop
+- [x] States: hover, focus, active, loading, empty, error
+- [x] Motion: header/footer scroll animation, carousel, reduced-motion support
+- [x] Provided mock backend used (`docs/API.md`, MSW in-process)
+- [x] Undocumented behavior investigated and written down (`docs/audit/`, `docs/DECISIONS.md`)
+- [x] Performance budget met (see `docs/architecture/07-performance-seo-a11y.md`)
+- [x] SEO: metadata, OG, robots, sitemap, structured data
+- [x] Type safety: no `any`
+- [x] Tests: unit, integration, end-to-end
+- [x] Dockerfile, no secrets in image, `.env.example`
+- [x] README: run locally, run in Docker, env vars, decisions, limitations, AI tools and process, improvements
 
 ## Improvements Over Reference Site
 
@@ -227,8 +267,6 @@ The AI was used for code generation, test writing, bug fixes, and architectural 
 - Header nav links (`/faq`, `/about-shahrzad`, `/wallet`, `/qr-payment`, `/shahrzad-services`) return 404 (only `/` and `/_not-found` implemented)
 - Parent tile (`parent_tile` type) flyout behavior not fully specified in reference
 - Responsive aspect-ratio swap for hero banner deferred (uses mobile aspect on all breakpoints)
-- `useHomeSections` complexity warning (15 > 10) - structural, no behavior change
-- Favicon files not provided (returns 404)
 
 ## License
 
