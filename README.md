@@ -224,6 +224,73 @@ pnpm verify          # full gate: lint + typecheck + tests + build
 Coverage thresholds (enforced in `vitest.config.ts`): global `60/60/60/50`; logic and data
 folders (`src/**/lib/**`, `src/shared/api/**`, `src/shared/design/**`) `85/85/85/75`.
 
+## CI/CD
+
+Two GitHub Actions pipelines share one reusable checks workflow (`.github/workflows/checks.yml`:
+`lint`, `unit`, `integration`), so the PR gate and `main` can never drift. Node 22 (from `.nvmrc`)
+and pnpm installs use `--frozen-lockfile` through the composite action `.github/actions/setup`.
+
+### PR gate (`ci-pr.yml`)
+
+Runs on every pull request to `main`:
+
+```
+[lint] [unit] [integration]   ->  [pr-ok]   <- the only required status check
+```
+
+Failing any job fails `pr-ok`, which blocks the merge. A newer push cancels the older run.
+
+### Main pipeline (`ci-main.yml`)
+
+Runs on every push to `main`:
+
+```
+[checks] [build] [prebuild]
+   |        |
+ [e2e] [web-vitals]
+   |        |
+     [main-ok]  ->  [deploy]   (vercel deploy --prebuilt --prod)
+```
+
+- `web-vitals` and `e2e` are **blocking**: if either fails, `main-ok` fails and `deploy` never runs.
+- `prebuild` (Vercel pull + build) runs in parallel with the tests and adds no critical-path time.
+- The main pipeline does not cancel itself, so a running production deploy is never interrupted.
+
+### Required check (manual, once per repository)
+
+In GitHub → Settings → Rules → Rulesets for `main`: require a pull request before merging and require
+the status check **`pr-ok`** only (do not add `lint`/`unit`/`integration` — `pr-ok` aggregates them).
+Leave "require branches to be up to date before merging" off.
+
+### Secrets and Vercel setup (manual, once)
+
+Add these **repository secrets** (Settings → Secrets and variables → Actions); `prebuild` and
+`deploy` read them:
+
+| Secret              | Where to get it                                                                  |
+| ------------------- | -------------------------------------------------------------------------------- |
+| `VERCEL_TOKEN`      | Vercel → Account Settings → Tokens → Create (scope to the project)               |
+| `VERCEL_ORG_ID`     | `.vercel/project.json` `orgId` after running `vercel link` locally               |
+| `VERCEL_PROJECT_ID` | `.vercel/project.json` `projectId` after running `vercel link` locally           |
+
+Also create a GitHub Environment named `production` (deployment branch rule `main`, no required
+reviewers) and make sure `NEXT_PUBLIC_API_BASE_URL` / `NEXT_PUBLIC_SITE_URL` exist in the Vercel
+project. Vercel's own Git auto-deploy is disabled by `vercel.json`
+(`{ "git": { "deploymentEnabled": false } }`), so production is only reachable through this pipeline.
+
+### Reading a Web Vitals failure
+
+The `web-vitals` job runs Lighthouse CI (desktop, median of 3 runs) against a local production
+server. Thresholds live in `lighthouserc.json` (performance ≥ 0.9, LCP ≤ 2500 ms, FCP ≤ 1800 ms,
+CLS ≤ 0.1, TBT ≤ 200 ms, server-response-time ≤ 800 ms). On failure, open the job log or the
+`lhci` diff line, e.g. `Performance 0.82 (un) -> 0.9 (un)`, and the `.lighthouseci` artifact.
+
+### Re-enabling Vercel PR previews
+
+Auto-deploy is off on purpose. To get preview deployments again, either set `deploymentEnabled` to
+`true` in `vercel.json` (Vercel then deploys every branch) or add a separate preview workflow that
+runs `vercel deploy` without `--prod` on pull requests.
+
 ## AI Tools Used
 
 This project was built with assistance from:
