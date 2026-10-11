@@ -245,15 +245,16 @@ Failing any job fails `pr-ok`, which blocks the merge. A newer push cancels the 
 Runs on every push to `main`:
 
 ```
-[checks] [build] [prebuild]
-   |        |
- [e2e] [web-vitals]
-   |        |
-     [main-ok]  ->  [deploy]   (vercel deploy --prebuilt --prod)
+[build] -+-> [e2e] -----+
+         +-> [web-vitals]+--> [main-ok] --> [deploy]   (vercel deploy --prebuilt --prod)
 ```
 
+Simplified: `checks` also feeds `main-ok`, and `prebuild` also feeds `deploy` directly.
+
 - `web-vitals` and `e2e` are **blocking**: if either fails, `main-ok` fails and `deploy` never runs.
-- `prebuild` (Vercel pull + build) runs in parallel with the tests and adds no critical-path time.
+- `main-ok` needs `checks`, `build`, `e2e` and `web-vitals`; `deploy` needs `main-ok` and `prebuild`.
+- `prebuild` (Vercel pull + build) runs in parallel with the tests and usually does not extend the
+  critical path.
 - The main pipeline does not cancel itself, so a running production deploy is never interrupted.
 
 ### Required check (manual, once per repository)
@@ -283,7 +284,8 @@ project. Vercel's own Git auto-deploy is disabled by `vercel.json`
 The `web-vitals` job runs Lighthouse CI (desktop, median of 3 runs) against a local production
 server. Thresholds live in `lighthouserc.json` (performance ≥ 0.9, LCP ≤ 2500 ms, FCP ≤ 1800 ms,
 CLS ≤ 0.1, TBT ≤ 200 ms, server-response-time ≤ 800 ms). On failure, open the job log or the
-`lhci` diff line, e.g. `Performance 0.82 (un) -> 0.9 (un)`, and the `.lighthouseci` artifact.
+`lhci` diff line, e.g. `Performance 0.82 (un) -> 0.9 (un)`, and the `lighthouse-reports` artifact
+(the uploaded `.lighthouseci` report directory).
 
 ### Re-enabling Vercel PR previews
 

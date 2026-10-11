@@ -104,7 +104,7 @@ success wave is never interrupted (cancelling could kill an in-flight production
 ```
 
 - `build`: caches `.next/cache`, runs `pnpm build`, uploads artifact `next-build` (`.next` +
-  `public`, hidden files included, 1-day retention).
+  `public`, excluding `!.next/cache`, hidden files included, 1-day retention).
 - `e2e`: shard-ready matrix `shard: [1]` (single shard today; bump to `[1,2,3,4]` in one line).
   Downloads `next-build`, installs Playwright browsers (cached), runs
   `playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}`, and uploads
@@ -115,7 +115,7 @@ success wave is never interrupted (cancelling could kill an in-flight production
   on failure.
 - `prebuild`: `vercel pull --yes --environment=production` then `vercel build --prod`, uploading
   `vercel-output` (`.vercel/output` + `.vercel/project.json`). It runs in parallel with the tests,
-  so it adds no critical-path time.
+  so it usually does not extend the critical path.
 - `deploy`: `needs: [main-ok, prebuild]`, `if: github.ref == 'refs/heads/main'`,
   `environment: production`, own `concurrency: { group: deploy-production, cancel-in-progress: false }`.
   Downloads `vercel-output` and runs `vercel deploy --prebuilt --prod`, writing the URL to the job
@@ -146,9 +146,10 @@ server-response-time ≤ 800 ms. Read a failure in the job log / `lhci` diff lin
 
 ### Known limitation
 The single `main-ok` fail-if-any gate is conservative: if any main job fails (say only `lint`),
-`web-vitals` and `deploy` are skipped and `main` shows red. e2e and Web Vitals do not run on the PR
-gate, so a break reaches `main` before it is caught. Deliberate trade-off; the later refinement is
-explicit per-job edges (`if: needs.<job>.result == 'success'`) instead of one OR-gate.
+`deploy` is skipped and `main` shows red, while `e2e` and `web-vitals` still run (they only need
+`build`); if `build` fails, `e2e` and `web-vitals` are also skipped. e2e and Web Vitals do not run
+on the PR gate, so a break reaches `main` before it is caught. Deliberate trade-off; the later
+refinement is explicit per-job edges (`if: needs.<job>.result == 'success'`) instead of one OR-gate.
 
 ## README (final deliverable)
 Sections: overview and screenshots; features; improvements over the original site; tech stack and why; architecture (folder map, component pattern, data flow diagram); run locally; run with Docker (and compose); environment variables table; scripts; testing (3 levels, how to run); performance and SEO results; decisions (link to `docs/DECISIONS.md`); limitations; **AI tools used and the full process** (which tools, for what, how outputs were verified, what was rejected); license/credits.

@@ -240,8 +240,8 @@ Format:
     `failure` or `cancelled`. Only `pr-ok` is required in the `main` ruleset.
   - **Main pipeline:** `checks` + `build` + `prebuild` start together; `build -> (e2e, web-vitals)`; all four
     feed `main-ok`; `deploy` (`needs: [main-ok, prebuild]`, `environment: production`) runs
-    `vercel deploy --prebuilt --prod`. `prebuild` (Vercel pull+build) runs in parallel, so it adds no
-    critical-path time. A red gate means no deploy.
+    `vercel deploy --prebuilt --prod`. `prebuild` (Vercel pull+build) runs in parallel, so it usually does
+    not extend the critical path. A red gate means no deploy.
   - **Web Vitals:** Lighthouse CI, desktop preset, median of 3, error-level thresholds in `lighthouserc.json`
     (perf ≥ 0.9, LCP ≤ 2500 ms, FCP ≤ 1800 ms, CLS ≤ 0.1, TBT ≤ 200 ms, server-response-time ≤ 800 ms) measured
     against a local `next start` in parallel with e2e. TBT proxies INP — a lab run cannot measure interaction.
@@ -253,8 +253,9 @@ Format:
     gate.
 - Consequences: PR and main share the exact same `lint`/`unit`/`integration` jobs, so they cannot drift, and
   the PR gate is the single required check. Known limitation: the single `main-ok` fail-if-any gate is
-  conservative — if any main job fails (say only `lint`), `web-vitals` and `deploy` are skipped and `main`
-  shows red. e2e and Web Vitals only run on `main`, so a break reaches `main` before it is caught; the later
+  conservative — if any main job fails (say only `lint`), `deploy` is skipped and `main` shows red, while
+  `e2e` and `web-vitals` still run (they only need `build`); if `build` fails, `e2e` and `web-vitals` are
+  also skipped. e2e and Web Vitals only run on `main`, so a break reaches `main` before it is caught; the later
   refinement is explicit per-job edges (`if: needs.<job>.result == 'success'`) instead of one OR-gate. Vercel
   PR previews are also off; re-enable later by changing `deploymentEnabled` or adding a preview workflow.
   Manual, out-of-repo setup (ruleset, secrets, `production` Environment) is documented in the README.
