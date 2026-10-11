@@ -106,7 +106,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 4. Loading, empty and error states exist and are tested.
 5. Accessibility: semantic landmarks, focus visible, labels, contrast, keyboard operable.
 6. Tests: unit for logic, integration for features, end-to-end for user flows (where the task touches them).
-7. Docs updated (`API.md` checklist, `docs/DECISIONS.md` for non-obvious choices, README when behavior changes).
+7. Docs updated (`docs/API.md` checklist, `docs/DECISIONS.md` for non-obvious choices, README when behavior changes).
 8. One Conventional Commit. Working tree clean.
 
 ## 10. Git rules (details: `docs/architecture/09`)

@@ -1,6 +1,6 @@
 import type { ApiError } from '@/shared/api';
 
-/** Wire shape of a banner from `GET /banners?type=mainPage&platform=pwa` (API.md). */
+/** Wire shape of a banner from `GET /banners?type=mainPage&platform=pwa` (docs/API.md). */
 export interface BannerDto {
   id: number;
   name: string;

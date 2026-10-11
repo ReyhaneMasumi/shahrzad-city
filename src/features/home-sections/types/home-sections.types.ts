@@ -1,12 +1,12 @@
 import type { ApiError } from '@/shared/api';
 
-/** Tile kinds present in the served main-page payload (API.md). */
+/** Tile kinds present in the served main-page payload (docs/API.md). */
 export type TileType = 'pwa' | 'shahrzad_pwa' | 'parent_tile' | 'wallet';
 
 /** NavBar entry kinds. */
 export type NavItemType = 'wallet' | 'services';
 
-/** Wire shape of a tile from `GET /main-page/apps-nested?platform=pwa` (API.md). */
+/** Wire shape of a tile from `GET /main-page/apps-nested?platform=pwa` (docs/API.md). */
 export interface TileDto {
   id: number;
   categoryId: number | null;

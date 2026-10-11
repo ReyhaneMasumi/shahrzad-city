@@ -24,7 +24,7 @@
 ├─ .opencode/               # Skills, commands, prompts for the agent
 ├─ Dockerfile, .dockerignore, docker-compose.yml, .env.example
 ├─ eslint.config.mjs, vitest.config.ts, playwright.config.ts, next.config.ts, proxy.ts
-└─ AGENTS.md, README.md, API.md
+└─ AGENTS.md, README.md
 ```
 
 ## Features for this homepage (proposal)

@@ -20,3 +20,9 @@
 | `audit/SHAHRZAD-UI-AUDIT.md` | Findings from the reference site (a11y + backlog) |
 | `audit/STEP-A-FINDINGS.md` | Structured reference-site investigation (Step A, 2026-10-08) |
 | `audit/visual-findings.md` | Per-section geometry, typography, color and spacing tables |
+| `API.md` | Provided mock-backend API contract (endpoints, payloads) |
+| `Design.md` | Reference design notes and starting tokens |
+| `PROMPT.md` | Original challenge prompt / Step requirements |
+| `fonts.md` | Font investigation and self-hosting plan |
+| `images.md` | Image hosts and remote patterns for `next/image` |
+| `css-variables.css` | Snapshot of the reference site's CSS variables |

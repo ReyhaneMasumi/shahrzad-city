@@ -47,7 +47,7 @@ homepage composes features and owns no data logic. Created only on demand (skill
 ├─ Dockerfile, .dockerignore, docker-compose.yml, .env.example
 ├─ eslint.config.mjs, vitest.config.ts, playwright.config.ts,
 ├─ next.config.ts, proxy.ts (only if a rewrite/proxy is needed — see §5.4)
-└─ AGENTS.md, README.md, API.md
+└─ AGENTS.md, README.md
 ```
 
 Feature shape (example `hero-banner/`): `api/` (endpoint fn + SWR keys),
