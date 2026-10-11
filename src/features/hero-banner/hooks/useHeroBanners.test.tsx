@@ -51,13 +51,11 @@ function failBanners() {
 }
 
 describe('useHeroBanners', () => {
-  it('resolves to success with the single served banner', async () => {
-    serveBanners([banner]);
+  it('resolves to success with the served banner fixtures', async () => {
     const { result } = renderHook(() => useHeroBanners(), { wrapper: SwrTestWrapper });
     expect(result.current.status).toBe('loading');
     await waitFor(() => expect(result.current.status).toBe('success'));
-    expect(result.current.data).toHaveLength(1);
-    expect(result.current.data[0]?.id).toBe(49);
+    expect(result.current.data.map((item) => item.id)).toEqual([311, 49]);
     expect(result.current.error).toBeNull();
     expect(result.current.isRefreshing).toBe(false);
   });

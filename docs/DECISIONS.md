@@ -210,3 +210,17 @@ Format:
 - Consequences: components read as `className="app-header"`, and Tailwind's utility layer still overrides the
   component layer for the few conditional utilities that remain (e.g. `h-[64px]`). The rule is mechanical, so
   it cannot rot; adding a genuinely new pattern means adding a component class, not a longer string.
+
+## D-025 PWA icons generated from public/brand/favicon.png
+- Date: 2026-10-11
+- Status: accepted
+- Context: favicons and PWA icons previously pointed at files that did not exist (`.ico`, 16/32, apple-touch)
+  or were derived from `logo.svg`. The owner replaced the brand art with `public/brand/favicon.png` (opaque
+  192px source, transparent 1px corners).
+- Decision: one reproducible generator, `scripts/generate-pwa-assets.mjs` (`pnpm generate:icons`, sharp +
+  png-to-ico), emits favicon.ico (16/32), favicon-16x16/32x32, apple-touch-icon (180), and `/icons/icon-{192,512}`
+  in `any` plus `/icons/icon-maskable-{192,512}` with the artwork centered in the central 80% safe zone. The
+  manifest lists both purposes and adds `id: '/'`; metadata now serves real favicon links plus `appleWebApp`.
+- Consequences: installability is satisfied (an `any` icon exists) and Android adaptive launchers get a safe
+  maskable render. Regenerating the set after a brand change is one command; committed PNGs stay the build-time
+  source of truth for standalone/Docker, where `public/` travel with the image (Dockerfile already copies it).

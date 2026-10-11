@@ -6,6 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: fa.app.name,
     short_name: fa.app.name,
     description: fa.app.description,
+    id: '/',
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
@@ -24,6 +25,18 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: '512x512',
         type: 'image/png',
         purpose: 'any',
+      },
+      {
+        src: '/icons/icon-maskable-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+      {
+        src: '/icons/icon-maskable-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
       },
     ],
   };
